@@ -1,0 +1,29 @@
+INSERT INTO MEMBER (MEMBER_ID, EMAIL, NAME, PASSWD, TEL, NICKNAME, GENDER, ADDRESS)
+VALUES (member_member_id_seq.NEXTVAL, 'test1@kh.com', '김민준',   'qwer1234!', '010-1234-0001', 'minjun',   '남자', '서울시 강남구 삼성동');
+
+INSERT INTO MEMBER (MEMBER_ID, EMAIL, NAME, PASSWD, TEL, NICKNAME, GENDER, ADDRESS)
+VALUES (member_member_id_seq.NEXTVAL, 'test2@kh.com', '이서현',   'qwer1234!', '010-1234-0002', 'seohyun',  '여자', '서울시 마포구 상수동');
+
+INSERT INTO MEMBER (MEMBER_ID, EMAIL, NAME, PASSWD, TEL, NICKNAME, GENDER, ADDRESS)
+VALUES (member_member_id_seq.NEXTVAL, 'test3@kh.com', '박지훈',   'qwer1234!', '010-1234-0003', 'jhoon',    '남자', '부산시 해운대구 우동');
+
+INSERT INTO MEMBER (MEMBER_ID, EMAIL, NAME, PASSWD, TEL, NICKNAME, GENDER, ADDRESS)
+VALUES (member_member_id_seq.NEXTVAL, 'test4@kh.com', '최유나',   'qwer1234!', '010-1234-0004', 'yuna',     '여자', '대구시 중구 동덕로');
+
+INSERT INTO MEMBER (MEMBER_ID, EMAIL, NAME, PASSWD, TEL, NICKNAME, GENDER, ADDRESS)
+VALUES (member_member_id_seq.NEXTVAL, 'test5@kh.com', '정우성',   'qwer1234!', '010-1234-0005', 'woosung',  '남자', '인천시 연수구 송도동');
+
+INSERT INTO MEMBER (MEMBER_ID, EMAIL, NAME, PASSWD, TEL, NICKNAME, GENDER, ADDRESS)
+VALUES (member_member_id_seq.NEXTVAL, 'test6@kh.com', '한지민',   'qwer1234!', '010-1234-0006', 'jimin',    '여자', '광주광역시 남구 봉선동');
+
+INSERT INTO MEMBER (MEMBER_ID, EMAIL, NAME, PASSWD, TEL, NICKNAME, GENDER, ADDRESS)
+VALUES (member_member_id_seq.NEXTVAL, 'test7@kh.com', '송중기',   'qwer1234!', '010-1234-0007', 'joongki',  '남자', '대전시 서구 둔산동');
+
+INSERT INTO MEMBER (MEMBER_ID, EMAIL, NAME, PASSWD, TEL, NICKNAME, GENDER, ADDRESS)
+VALUES (member_member_id_seq.NEXTVAL, 'test8@kh.com', '윤아린',   'qwer1234!', '010-1234-0008', 'arin',     '여자', '울산시 남구 삼산동');
+
+INSERT INTO MEMBER (MEMBER_ID, EMAIL, NAME, PASSWD, TEL, NICKNAME, GENDER, ADDRESS)
+VALUES (member_member_id_seq.NEXTVAL, 'test9@kh.com', '강동원',   'qwer1234!', '010-1234-0009', 'dongwon',  '남자', '경기도 성남시 분당구');
+
+INSERT INTO MEMBER (MEMBER_ID, EMAIL, NAME, PASSWD, TEL, NICKNAME, GENDER, ADDRESS)
+VALUES (member_member_id_seq.NEXTVAL, 'test10@kh.com','장예원', 'qwer1234!', '010-1234-0010', 'yewon',    '여자', '강원도 춘천시 후평동');
