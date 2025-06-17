@@ -75,17 +75,16 @@ references code(code_id);
 --제약조건				
 alter table code add constraint code_useyn_ck check(useyn in ('Y','N'));				
 --------------------------------------------------------							
-				
---------------------------------------------------------				
---게시판				
---------------------------------------------------------				
-create table bbs(				
-BBS_ID       number(10)    PRIMARY KEY,				
-BCATEGORY    varchar2(11)  NOT null,				
-status       varchar2(11)  DEFAULT 'B0201' NOT NULL,				
-title        varchar2(100) NOT null,				
-member_id    number(10)    NOT null,				
-nickname     varchar2(30),				
+
+--------------------------------------------------------
+--게시판
+--------------------------------------------------------
+create table bbs(
+BBS_ID       number(10)    PRIMARY KEY,
+BCATEGORY    varchar2(11)  NOT null,
+status       varchar2(11)  NOT NULL,
+title        varchar2(100) NOT null,
+member_id    number(10)    NOT null,
 hit          number(5)     DEFAULT 0 NOT null,				
 bcontent     clob          NOT null,				
 pbbs_id      number(10),				

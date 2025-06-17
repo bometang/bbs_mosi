@@ -27,3 +27,40 @@ VALUES (member_member_id_seq.NEXTVAL, 'test9@kh.com', '강동원',   'qwer1234!'
 
 INSERT INTO MEMBER (MEMBER_ID, EMAIL, NAME, PASSWD, TEL, NICKNAME, GENDER, ADDRESS)
 VALUES (member_member_id_seq.NEXTVAL, 'test10@kh.com','장예원', 'qwer1234!', '010-1234-0010', 'yewon',    '여자', '강원도 춘천시 후평동');
+
+----------------------------------------------------------------------
+--코드
+----------------------------------------------------------------------
+INSERT INTO code(code_id,decode,pcode_id)
+VALUES ('B01','카테고리',NULL);
+
+INSERT INTO code(code_id,decode,pcode_id)
+VALUES ('B0101','장애인','B01');
+
+INSERT INTO code(code_id,decode,pcode_id)
+VALUES ('B0102','의료/미용','B01');
+
+INSERT INTO code(code_id,decode,pcode_id)
+VALUES ('B0103','시즌','B01');
+
+INSERT INTO code(code_id,decode,pcode_id)
+VALUES ('B0104','반려견','B01');
+
+INSERT INTO code(code_id,decode,pcode_id)
+VALUES ('B0105','문화','B01');
+
+INSERT INTO code(code_id,decode,pcode_id)
+VALUES ('B0106','맛집','B01');
+
+INSERT INTO code(code_id,decode,pcode_id)
+VALUES ('B0107','실버','B01');
+----------------------------------------------------------------------
+INSERT INTO code(code_id,decode,pcode_id)
+VALUES ('B02','게시판 상태',NULL);
+
+INSERT INTO code(code_id,decode,pcode_id)
+VALUES ('B0201','일반','B02');
+
+INSERT INTO code(code_id,decode,pcode_id)
+VALUES ('B0202','삭제','B02');
+----------------------------------------------------------------------
