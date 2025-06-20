@@ -3,6 +3,7 @@ package com.KDT.mosi.domain.bbs.dao;
 import com.KDT.mosi.domain.entity.Bbs;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -23,29 +24,48 @@ public class BbsDAOImpl implements BbsDAO {
   /**
    * 게시글 등록
    * @param bbs
-   * @return
+   * @return 게시글 번호
    */
   @Override
   public Long save(Bbs bbs) {
+
     StringBuffer sql = new StringBuffer();
-    sql.append("INSERT INTO bbs (bbs_id,bcategory,title,member_id,bcontent,pbbs_id,bgroup,step,bindent) ");
-    sql.append("VALUES (bbs_bbs_id_seq.nextval,:bcategory,:title,:memberId,:bcontent,NULL,bbs_bbs_id_seq.CURRVAL,0,0) ");
+    boolean parentsBbs = bbs.getPbbsId() != null;
 
-    //BeanPropertySqlParameterSource : 자바객체 필드명과 SQL파라미터명이 같을때 자동 매칭함.
-    SqlParameterSource param = new BeanPropertySqlParameterSource(postBoards);
+    // 게시글 등록시 일반글이면 if로 등록하고 답글이면 else로 등록함.
+    if (!parentsBbs) {
+      sql.append("INSERT INTO bbs (bbs_id,bcategory,title,member_id,bcontent,pbbs_id,bgroup,step,bindent) ");
+      sql.append("VALUES (bbs_bbs_id_seq.nextval,:bcategory,:title,:memberId,:bcontent,null,bbs_bbs_id_seq.CURRVAL,0,0) ");
+    } else {
+      sql.append("INSERT INTO bbs (bbs_id,bcategory,title,member_id,bcontent,pbbs_id,bgroup,step,bindent) ");
+      sql.append("VALUES (bbs_bbs_id_seq.nextval,:bcategory,:title,:memberId,:bcontent,:pbbsId,:bgroup,:step,:bindent) ");
+    }
 
-    // template.update()가 수행된 레코드의 특정 컬럼값을 읽어오는 용도(게시글 번호)
+    SqlParameterSource param = new BeanPropertySqlParameterSource(bbs);
+
+
     KeyHolder keyHolder = new GeneratedKeyHolder();
-    long rows = template.update(sql.toString(),param, keyHolder, new String[]{"post_id"} );
+    long rows = template.update(sql.toString(),param, keyHolder, new String[]{"bbs_id"} );
 
-    Number pidNumber = (Number)keyHolder.getKeys().get("post_id");
+    Number pidNumber = (Number)keyHolder.getKeys().get("bbs_id");
     long pid = pidNumber.longValue();
     return pid;
   }
 
   @Override
   public List<Bbs> findAll() {
-    return List.of();
+    //sql
+    StringBuffer sql = new StringBuffer();
+    sql.append("  SELECT b.bbs_id as bbs_id,b.bcategory as bcategory,b.title as title,m.member_id AS member_id,b.create_date AS create_date, b.update_date as update_date ");
+    sql.append("FROM bbs b ");
+    sql.append("JOIN left member m ");
+    sql.append("ON b.member_id = m.member_id ");
+    sql.append("ORDER BY post_id DESC ");
+
+    //db요청
+    List<Bbs> list = template.query(sql.toString(), BeanPropertyRowMapper.newInstance(Bbs.class));
+
+    return list;
   }
 
   @Override
