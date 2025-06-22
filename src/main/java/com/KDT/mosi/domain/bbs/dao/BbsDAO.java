@@ -38,4 +38,6 @@ public interface BbsDAO {
 
   //게시글수정
   int updateById(Long bbsId, Bbs bbs);
+
+
 }

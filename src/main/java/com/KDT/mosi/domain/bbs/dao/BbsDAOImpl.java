@@ -3,8 +3,10 @@ package com.KDT.mosi.domain.bbs.dao;
 import com.KDT.mosi.domain.entity.Bbs;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -12,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -52,15 +55,29 @@ public class BbsDAOImpl implements BbsDAO {
     return pid;
   }
 
+  /**
+   * 게시글 전체 목록
+   * @return 게시글 전체 목록
+   */
   @Override
   public List<Bbs> findAll() {
     //sql
     StringBuffer sql = new StringBuffer();
-    sql.append("  SELECT b.bbs_id as bbs_id,b.bcategory as bcategory,b.title as title,m.member_id AS member_id,b.create_date AS create_date, b.update_date as update_date ");
+    sql.append("SELECT ");
+    sql.append("b.bbs_id as bbs_id, ");
+    sql.append("b.bcategory as bcategory, ");
+    sql.append("CASE ");
+    sql.append("WHEN b.status = 'B0202' THEN '삭제된 게시글입니다.' ");
+    sql.append("ELSE b.title ");
+    sql.append("END AS title, ");
+    sql.append("NVL(m.member_id, 0) AS member_id, ");
+    sql.append("b.create_date AS create_date, ");
+    sql.append("b.update_date as update_date, ");
+    sql.append("b.bindent as binednt ");
     sql.append("FROM bbs b ");
-    sql.append("JOIN left member m ");
+    sql.append("LEFT JOIN member m ");
     sql.append("ON b.member_id = m.member_id ");
-    sql.append("ORDER BY post_id DESC ");
+    sql.append("ORDER BY b.bgroup DESC, b.step ASC, b.bbs_id ASC ");
 
     //db요청
     List<Bbs> list = template.query(sql.toString(), BeanPropertyRowMapper.newInstance(Bbs.class));
@@ -68,48 +85,247 @@ public class BbsDAOImpl implements BbsDAO {
     return list;
   }
 
+  /**
+   * 전체 목록의 페이지
+   * @param pageNo  페이지 번호
+   * @param numOfRows 한페이지당 게시글 수
+   * @return 게시글
+   */
   @Override
   public List<Bbs> findAll(int pageNo, int numOfRows) {
-    return List.of();
+    //sql
+    StringBuffer sql = new StringBuffer();
+    sql.append("SELECT ");
+    sql.append("b.bbs_id as bbs_id, ");
+    sql.append("b.bcategory as bcategory, ");
+    sql.append("CASE ");
+    sql.append("WHEN b.status = 'B0202' THEN '삭제된 게시글입니다.' ");
+    sql.append("ELSE b.title ");
+    sql.append("END AS title, ");
+    sql.append("NVL(m.member_id, 0) AS member_id, ");
+    sql.append("b.hit AS hit, ");
+    sql.append("b.bindent AS bindent, ");
+    sql.append("b.create_date AS create_date, ");
+    sql.append("b.update_date as update_date, ");
+    sql.append("FROM bbs b ");
+    sql.append("LEFT JOIN member m ");
+    sql.append("ON b.member_id = m.member_id ");
+    sql.append("  WHERE bcategory = :bcategory ");
+    sql.append("ORDER BY b.bgroup DESC, b.step ASC, b.bbs_id ASC ");
+
+
+    Map<String, Integer> map = Map.of("pageNo", pageNo, "numOfRows", numOfRows);
+    List<Bbs> list = template.query(sql.toString(), map, BeanPropertyRowMapper.newInstance(Bbs.class));
+
+    return list;
   }
 
+  /**
+   * 전체 게시글 갯수
+   * @return
+   */
   @Override
   public int getTotalCount() {
-    return 0;
+    String sql = "SELECT count(bbs_id) FROM bbs ";
+
+    SqlParameterSource param = new MapSqlParameterSource();
+    int i = template.queryForObject(sql, param, Integer.class);
+
+    return i;
   }
 
+  /**
+   * 특정 카테고리 게시글 전체 목록
+   * @param bcategory
+   * @return
+   */
   @Override
   public List<Bbs> findAll(String bcategory) {
-    return List.of();
+    //sql
+    StringBuffer sql = new StringBuffer();
+    sql.append("SELECT ");
+    sql.append("b.bbs_id as bbs_id, ");
+    sql.append("b.bcategory as bcategory, ");
+    sql.append("CASE ");
+    sql.append("WHEN b.status = 'B0202' THEN '삭제된 게시글입니다.' ");
+    sql.append("ELSE b.title ");
+    sql.append("END AS title, ");
+    sql.append("NVL(m.member_id, 0) AS member_id, ");
+    sql.append("b.hit AS hit, ");
+    sql.append("b.create_date AS create_date, ");
+    sql.append("b.update_date as update_date, ");
+    sql.append("b.bindent as bindent ");
+    sql.append("FROM bbs b ");
+    sql.append("LEFT JOIN member m ");
+    sql.append("ON b.member_id = m.member_id ");
+    sql.append("  WHERE bcategory = :bcategory ");
+    sql.append("ORDER BY b.bgroup DESC, b.step ASC, b.bbs_id ASC ");
+
+    SqlParameterSource param = new MapSqlParameterSource().addValue("bcategory", bcategory);
+    //db요청
+    List<Bbs> list = template.query(sql.toString(), param, BeanPropertyRowMapper.newInstance(Bbs.class));
+
+    return list;
   }
 
+  /**
+   * 특정 카테고리 게시글 전체 목록의 페이지
+   * @param bcategory
+   * @param pageNo
+   * @param numOfRows
+   * @return
+   */
   @Override
   public List<Bbs> findAll(String bcategory, int pageNo, int numOfRows) {
-    return List.of();
+    //sql
+    StringBuffer sql = new StringBuffer();
+    sql.append("SELECT ");
+    sql.append("b.bbs_id as bbs_id, ");
+    sql.append("b.bcategory as bcategory, ");
+    sql.append("CASE ");
+    sql.append("WHEN b.status = 'B0202' THEN '삭제된 게시글입니다.' ");
+    sql.append("ELSE b.title ");
+    sql.append("END AS title, ");
+    sql.append("NVL(m.member_id, 0) AS member_id, ");
+    sql.append("b.hit AS hit, ");
+    sql.append("b.create_date AS create_date, ");
+    sql.append("b.update_date as update_date, ");
+    sql.append("b.bindent as bindent ");
+    sql.append("FROM bbs b ");
+    sql.append("LEFT JOIN member m ");
+    sql.append("ON b.member_id = m.member_id ");
+    sql.append("WHERE bcategory = :bcategory ");
+    sql.append("ORDER BY b.bgroup DESC, b.step ASC, b.bbs_id ASC ");
+    sql.append("  OFFSET (:pageNo -1) * :numOfRows ROWS ");
+    sql.append("FETCH NEXT :numOfRows ROWS only ");
+
+    Map<String, Object> map = Map.of("pageNo", pageNo, "numOfRows", numOfRows, "bcategory",bcategory);
+    List<Bbs> list = template.query(sql.toString(), map, BeanPropertyRowMapper.newInstance(Bbs.class));
+
+    return list;
   }
 
+  /**
+   * 특정 카테고리 게시글 전체 게시글 갯수
+   * @param bcategory
+   * @return
+   */
   @Override
   public int getTotalCount(String bcategory) {
-    return 0;
+    String sql = "SELECT count(bbs_id) FROM bbs where bcategory = :bcategory ";
+
+    Map<String, Object> map = Map.of("bcategory",bcategory);
+    int i = template.queryForObject(sql, map, Integer.class);
+
+    return i;
   }
 
+  /**
+   * 게시글 조회
+   * @param id 게시글 번호
+   * @return  게시글 정보
+   */
   @Override
   public Optional<Bbs> findById(Long id) {
-    return Optional.empty();
+    //sql
+    StringBuffer sql = new StringBuffer();
+    sql.append("SELECT ");
+    sql.append("b.bbs_id as bbs_id, ");
+    sql.append("b.bcategory as bcategory, ");
+    sql.append("CASE ");
+    sql.append("WHEN b.status = 'B0202' THEN '삭제된 게시글입니다.' ");
+    sql.append("ELSE b.title ");
+    sql.append("END AS title, ");
+    sql.append("NVL(m.member_id, 0) AS member_id, ");
+    sql.append("b.hit AS hit, ");
+    sql.append("CASE ");
+    sql.append("WHEN b.status = 'B0202' THEN to_clob('삭제된 게시글입니다.') ");
+    sql.append("ELSE b.bcontent ");
+    sql.append("END AS bcontent, ");
+    sql.append("b.pbbs_id AS pbbs_id, ");
+    sql.append("b.bgroup AS bgroup, ");
+    sql.append("b.step AS step, ");
+    sql.append("b.bindent AS bindent, ");
+    sql.append("b.create_date AS create_date, ");
+    sql.append("b.update_date as update_date ");
+    sql.append("FROM bbs b ");
+    sql.append("LEFT JOIN member m ");
+    sql.append("ON b.member_id = m.member_id ");
+    sql.append("where b.bbs_id = :id ");
+
+    SqlParameterSource param = new MapSqlParameterSource().addValue("id",id);
+
+    Bbs bbs = null;
+    try {
+      bbs = template.queryForObject(sql.toString(), param, BeanPropertyRowMapper.newInstance(Bbs.class));
+    } catch (EmptyResultDataAccessException e) { //template.queryForObject() : 레코드를 못찾으면 예외 발생
+      return Optional.empty();
+    }
+
+    return Optional.of(bbs);
   }
 
+  /**
+   * 게시글 삭제시 코드만 업데이트
+   * @param id
+   * @return
+   */
   @Override
   public int deleteById(Long id) {
-    return 0;
+    StringBuffer sql = new StringBuffer();
+    sql.append("UPDATE bbs ");
+    sql.append("   SET status = 'B0202',update_date = systimestamp ");
+    sql.append(" WHERE bbs_id = :id ");
+
+    //수동매핑
+    SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+
+    int rows = template.update(sql.toString(), param); // 수정된 행의 수 반환
+
+    return rows;
   }
 
+  /**
+   * 게시글 여러개 삭제시 코드만 업데이트
+   * @param ids
+   * @return
+   */
   @Override
   public int deleteByIds(List<Long> ids) {
-    return 0;
+    StringBuffer sql = new StringBuffer();
+    sql.append("UPDATE bbs ");
+    sql.append("   SET status = 'B0202',update_date = systimestamp ");
+    sql.append(" WHERE bbs_id IN ( :ids) ");
+
+    //수동매핑
+    SqlParameterSource param = new MapSqlParameterSource().addValue("ids",ids);
+
+    int rows = template.update(sql.toString(), param); // 수정된 행의 수 반환
+
+    return rows;
   }
 
+  /**
+   * 게시글의 제목,내용을 수정
+   * @param bbsId
+   * @param bbs
+   * @return
+   */
   @Override
   public int updateById(Long bbsId, Bbs bbs) {
-    return 0;
+    StringBuffer sql = new StringBuffer();
+    sql.append("UPDATE bbs ");
+    sql.append("   SET title = :title, bcontent = :bcontent, update_date = systimestamp ");
+    sql.append(" WHERE bbs_id = :bbsId ");
+
+    //수동매핑
+    SqlParameterSource param = new MapSqlParameterSource()
+        .addValue("title", bbs.getTitle())
+        .addValue("bcontent", bbs.getBcontent())
+        .addValue("bbsId", bbsId);
+
+    int rows = template.update(sql.toString(), param); // 수정된 행의 수 반환
+
+    return rows;
   }
 }
