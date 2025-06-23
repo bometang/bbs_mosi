@@ -5,13 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7fc470a1-286f-4360-ab34-5292c3cb0de6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/sql/bbs/bbs_query.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/domain/bbs/dao/BbsDAOImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/domain/bbs/dao/BbsDAOImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/1mosi_bbs_table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/bbs/1mosi_bbs_table.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/2mosi_bbs_member.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/bbs/2mosi_bbs_member.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/bbs_child.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/bbs/bbs_child.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/bbs_parent60 (1).sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/bbs/bbs_parent60 (1).sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/domain/bbs/dao/BbsDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/domain/bbs/dao/BbsDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/domain/bbs/dao/BbsDAOImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/bbs/2mosi_bbs_member.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/bbs/2mosi_bbs_member.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/bbs/dao/BbsDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/bbs/dao/BbsDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/bbs/dao/BbsDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/bbs/dao/BbsDAOImpl.java" afterDir="false" />
     </list>
@@ -49,19 +46,19 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/KDT/projects/junmo/sql",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "File.Encoding"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/KDT/projects/junmo/sql&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\KDT\projects\junmo\sql" />

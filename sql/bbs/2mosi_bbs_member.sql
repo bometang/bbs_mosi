@@ -63,4 +63,7 @@ VALUES ('B0201','일반','B02');
 
 INSERT INTO code(code_id,decode,pcode_id)
 VALUES ('B0202','삭제','B02');
+
+INSERT INTO code(code_id,decode,pcode_id)
+VALUES ('B0203','임시저장','B02');
 ----------------------------------------------------------------------

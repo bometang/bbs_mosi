@@ -13,6 +13,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,6 +25,8 @@ import java.util.Optional;
 public class BbsDAOImpl implements BbsDAO {
   final private NamedParameterJdbcTemplate template;
 
+
+
   /**
    * 게시글 등록
    * @param bbs
@@ -34,15 +37,22 @@ public class BbsDAOImpl implements BbsDAO {
 
     StringBuffer sql = new StringBuffer();
     boolean parentsBbs = bbs.getPbbsId() != null;
+    String statusBbs = bbs.getStatus();
 
     // 게시글 등록시 일반글이면 if로 등록하고 답글이면 else로 등록함.
-    if (!parentsBbs) {
-      sql.append("INSERT INTO bbs (bbs_id,bcategory,title,member_id,bcontent,pbbs_id,bgroup,step,bindent) ");
-      sql.append("VALUES (bbs_bbs_id_seq.nextval,:bcategory,:title,:memberId,:bcontent,null,bbs_bbs_id_seq.CURRVAL,0,0) ");
-    } else {
-      sql.append("INSERT INTO bbs (bbs_id,bcategory,title,member_id,bcontent,pbbs_id,bgroup,step,bindent) ");
-      sql.append("VALUES (bbs_bbs_id_seq.nextval,:bcategory,:title,:memberId,:bcontent,:pbbsId,:bgroup,:step,:bindent) ");
+    if ("B0201".equals(statusBbs)) {
+      if (!parentsBbs) {
+        sql.append("INSERT INTO bbs (bbs_id,bcategory,status,title,member_id,bcontent,pbbs_id,bgroup,step,bindent) ");
+        sql.append("VALUES (bbs_bbs_id_seq.nextval,:bcategory,'B0201',:title,:memberId,:bcontent,null,bbs_bbs_id_seq.CURRVAL,0,0) ");
+      } else {
+        sql.append("INSERT INTO bbs (bbs_id,bcategory,status,title,member_id,bcontent,pbbs_id,bgroup,step,bindent) ");
+        sql.append("VALUES (bbs_bbs_id_seq.nextval,:bcategory,'B0201',:title,:memberId,:bcontent,:pbbsId,:bgroup,:step,:bindent) ");
+      }
+    } else if ("B0203".equals(statusBbs)) {
+      sql.append("INSERT INTO bbs (bbs_id,bcategory,status,title,member_id,bcontent,pbbs_id,bgroup,step,bindent) ");
+      sql.append("VALUES (bbs_bbs_id_seq.nextval,:bcategory,'B0203',:title,:memberId,:bcontent,:pbbsId,:bgroup,:step,:bindent) ");
     }
+
 
     SqlParameterSource param = new BeanPropertySqlParameterSource(bbs);
 
@@ -73,14 +83,17 @@ public class BbsDAOImpl implements BbsDAO {
     sql.append("NVL(m.member_id, 0) AS member_id, ");
     sql.append("b.create_date AS create_date, ");
     sql.append("b.update_date as update_date, ");
-    sql.append("b.bindent as binednt ");
+    sql.append("b.bindent as bindent ");
     sql.append("FROM bbs b ");
     sql.append("LEFT JOIN member m ");
     sql.append("ON b.member_id = m.member_id ");
+    sql.append("where b.status <> 'B0203' ");
     sql.append("ORDER BY b.bgroup DESC, b.step ASC, b.bbs_id ASC ");
 
+    Map<String, Object> params = Collections.emptyMap();
+
     //db요청
-    List<Bbs> list = template.query(sql.toString(), BeanPropertyRowMapper.newInstance(Bbs.class));
+    List<Bbs> list = template.query(sql.toString(),params, BeanPropertyRowMapper.newInstance(Bbs.class));
 
     return list;
   }
@@ -106,12 +119,14 @@ public class BbsDAOImpl implements BbsDAO {
     sql.append("b.hit AS hit, ");
     sql.append("b.bindent AS bindent, ");
     sql.append("b.create_date AS create_date, ");
-    sql.append("b.update_date as update_date, ");
+    sql.append("b.update_date as update_date ");
     sql.append("FROM bbs b ");
     sql.append("LEFT JOIN member m ");
     sql.append("ON b.member_id = m.member_id ");
-    sql.append("  WHERE bcategory = :bcategory ");
+    sql.append("where b.status <> 'B0203' ");
     sql.append("ORDER BY b.bgroup DESC, b.step ASC, b.bbs_id ASC ");
+    sql.append("  OFFSET (:pageNo -1) * :numOfRows ROWS ");
+    sql.append("FETCH NEXT :numOfRows ROWS ONLY ");
 
 
     Map<String, Integer> map = Map.of("pageNo", pageNo, "numOfRows", numOfRows);
@@ -126,7 +141,7 @@ public class BbsDAOImpl implements BbsDAO {
    */
   @Override
   public int getTotalCount() {
-    String sql = "SELECT count(bbs_id) FROM bbs ";
+    String sql = "SELECT count(bbs_id) FROM bbs where status <> 'B0203' ";
 
     SqlParameterSource param = new MapSqlParameterSource();
     int i = template.queryForObject(sql, param, Integer.class);
@@ -158,7 +173,8 @@ public class BbsDAOImpl implements BbsDAO {
     sql.append("FROM bbs b ");
     sql.append("LEFT JOIN member m ");
     sql.append("ON b.member_id = m.member_id ");
-    sql.append("  WHERE bcategory = :bcategory ");
+    sql.append("  WHERE b.bcategory = :bcategory ");
+    sql.append("  AND b.status <> 'B0203' ");
     sql.append("ORDER BY b.bgroup DESC, b.step ASC, b.bbs_id ASC ");
 
     SqlParameterSource param = new MapSqlParameterSource().addValue("bcategory", bcategory);
@@ -194,7 +210,8 @@ public class BbsDAOImpl implements BbsDAO {
     sql.append("FROM bbs b ");
     sql.append("LEFT JOIN member m ");
     sql.append("ON b.member_id = m.member_id ");
-    sql.append("WHERE bcategory = :bcategory ");
+    sql.append("WHERE b.bcategory = :bcategory ");
+    sql.append("  AND b.status <> 'B0203' ");
     sql.append("ORDER BY b.bgroup DESC, b.step ASC, b.bbs_id ASC ");
     sql.append("  OFFSET (:pageNo -1) * :numOfRows ROWS ");
     sql.append("FETCH NEXT :numOfRows ROWS only ");
@@ -212,7 +229,7 @@ public class BbsDAOImpl implements BbsDAO {
    */
   @Override
   public int getTotalCount(String bcategory) {
-    String sql = "SELECT count(bbs_id) FROM bbs where bcategory = :bcategory ";
+    String sql = "SELECT count(bbs_id) FROM bbs where bcategory = :bcategory  AND status <> 'B0203' ";
 
     Map<String, Object> map = Map.of("bcategory",bcategory);
     int i = template.queryForObject(sql, map, Integer.class);
@@ -327,5 +344,28 @@ public class BbsDAOImpl implements BbsDAO {
     int rows = template.update(sql.toString(), param); // 수정된 행의 수 반환
 
     return rows;
+  }
+
+  @Override
+  public int updateStep(Long bgroup, Bbs parentBbs) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("SELECT NVL(MAX(step), :parentStep) ");
+    sql.append("FROM bbs ");
+    sql.append("WHERE bgroup = :bgroup ");
+    sql.append("AND pbbs_id= :parentId ");
+    sql.append("AND bindent= :childBindent ");
+
+
+    long childBindent = parentBbs.getBindent() + 1;
+    SqlParameterSource param = new MapSqlParameterSource()
+        .addValue("bgroup",       bgroup)
+        .addValue("parentId",     parentBbs.getBbsId())
+        .addValue("parentStep",   parentBbs.getStep())
+        .addValue("childBindent", childBindent);
+
+
+    Long lastStep = template.queryForObject(sql, param, Long.class);
+
+    return lastStep + 1;
   }
 }

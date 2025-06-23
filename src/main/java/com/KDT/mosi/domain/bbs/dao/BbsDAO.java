@@ -39,5 +39,6 @@ public interface BbsDAO {
   //게시글수정
   int updateById(Long bbsId, Bbs bbs);
 
-
+  //답글 순서 조정
+  int updateStep(Long bgroup, Bbs parentBbs);
 }
