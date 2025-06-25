@@ -346,26 +346,45 @@ public class BbsDAOImpl implements BbsDAO {
     return rows;
   }
 
+  /**
+   * 답글,대답글 추가시 목록 순서 변경
+   * @param bgroup
+   * @param parentBbs
+   * @return
+   */
   @Override
   public int updateStep(Long bgroup, Bbs parentBbs) {
+    // 1) 최대 child step 조회
     StringBuffer sql = new StringBuffer();
     sql.append("SELECT NVL(MAX(step), :parentStep) ");
     sql.append("FROM bbs ");
-    sql.append("WHERE bgroup = :bgroup ");
-    sql.append("AND pbbs_id= :parentId ");
-    sql.append("AND bindent= :childBindent ");
-
+    sql.append("WHERE bgroup       = :bgroup ");
+    sql.append("  AND pbbs_id      = :parentId ");
+    sql.append("  AND bindent      = :childBindent ");
 
     long childBindent = parentBbs.getBindent() + 1;
-    SqlParameterSource param = new MapSqlParameterSource()
+    // MapSqlParameterSource로 선언
+    MapSqlParameterSource param = new MapSqlParameterSource()
         .addValue("bgroup",       bgroup)
         .addValue("parentId",     parentBbs.getBbsId())
         .addValue("parentStep",   parentBbs.getStep())
         .addValue("childBindent", childBindent);
 
+    Long lastStep = template.queryForObject(sql.toString(), param, Long.class);
+    int newStep = lastStep.intValue() + 1;
 
-    Long lastStep = template.queryForObject(sql, param, Long.class);
+    // 2) 계산된 위치(newStep) 이상인 모든 글의 step +1
+    StringBuffer shiftSql = new StringBuffer();
+    shiftSql.append("UPDATE bbs ");
+    shiftSql.append("   SET step = step + 1 ");
+    shiftSql.append(" WHERE bgroup = :bgroup ");
+    shiftSql.append("   AND step   >= :newStep");
 
-    return lastStep + 1;
+    // 같은 param에 newStep 값만 추가
+    param.addValue("newStep", newStep);
+    template.update(shiftSql.toString(), param);
+
+    // 3) 새 답글의 step 리턴
+    return newStep;
   }
 }
