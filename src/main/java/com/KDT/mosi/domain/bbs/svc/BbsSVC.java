@@ -41,4 +41,7 @@ public interface BbsSVC {
 
   //답글 순서 조정
   int updateStep(Long bgroup, Bbs parentBbs);
+
+  //조회수 증가
+  public int increaseHit(Long id);
 }

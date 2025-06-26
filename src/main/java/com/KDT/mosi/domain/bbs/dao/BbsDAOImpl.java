@@ -387,4 +387,15 @@ public class BbsDAOImpl implements BbsDAO {
     // 3) 새 답글의 step 리턴
     return newStep;
   }
+  /**
+   * 게시글 조회수 증가
+   * @param id 게시글 번호
+   * @return 수정된 행의 수
+   */
+  @Override
+  public int increaseHit(Long id) {
+    String sql = "UPDATE bbs SET hit = hit + 1 WHERE bbs_id = :id";
+    SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+    return template.update(sql, param);
+  }
 }

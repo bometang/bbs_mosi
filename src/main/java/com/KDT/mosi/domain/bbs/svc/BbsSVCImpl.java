@@ -76,4 +76,9 @@ public class BbsSVCImpl implements BbsSVC {
   public int updateStep(Long bgroup, Bbs parentBbs) {
     return bbsDAO.updateStep(bgroup, parentBbs);
   }
+
+  @Override
+  public int increaseHit(Long id) {
+    return bbsDAO.increaseHit(id);
+  }
 }
