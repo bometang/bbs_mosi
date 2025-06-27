@@ -11,13 +11,13 @@ public class Bbs {
   private String status;
   private String title;
   private Long memberId;
-  private String nickname;
+//  private String nickname;
   private Long hit;
   private String bcontent;
   private Long pbbsId;
   private Long bgroup;
   private Long step;
   private Long bindent;
-  private LocalDateTime CREATE_DATE;
-  private LocalDateTime UPDATE_DATE;
+  private LocalDateTime createDate;
+  private LocalDateTime updateDate;
 }

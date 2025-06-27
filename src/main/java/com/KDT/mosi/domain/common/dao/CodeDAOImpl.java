@@ -21,7 +21,7 @@ public class CodeDAOImpl implements CodeDAO {
   @Override
   public List<CodeDTO> loadCodes(CodeId pcodeId) {
     StringBuffer sql = new StringBuffer();
-    sql.append("select code_id,code_name ");
+    sql.append("select code_id,DECODE ");
     sql.append("  from code ");
     sql.append(" where pcode_id = :pcodeId ");
     sql.append("   and useyn = 'Y' ");

@@ -158,7 +158,7 @@ public class ApiBbsController {
     return ResponseEntity.ok(listApiResponse);
   }
 
-  //게시글 목록-페이징      //   GET     /bbs      =>  GET http://localhost:9080/api/bbs/paging?pageNo=1&numOfRows=10
+  //게시글 목록-페이징      //   GET     /bbs      =>  GET http://localhost:9090/api/bbs/paging?pageNo=1&numOfRows=10
   @GetMapping("/paging")
 //  @ResponseBody
   public ResponseEntity<ApiResponse<List<Bbs>>> findAll(

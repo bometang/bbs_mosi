@@ -3,22 +3,20 @@ package com.KDT.mosi.domain.bbs.svc;
 import com.KDT.mosi.domain.bbs.dao.BbsDAO;
 import com.KDT.mosi.domain.entity.Bbs;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Slf4j
 @RequiredArgsConstructor
-public class BbsSVCImpl implements BbsSVC {
+@Repository
+public class BbsSVCImpl implements BbsSVC{
   private final BbsDAO bbsDAO;
 
   @Override
   public Long save(Bbs bbs) {
-    //
-
-
-
     return bbsDAO.save(bbs);
   }
 
@@ -44,7 +42,7 @@ public class BbsSVCImpl implements BbsSVC {
 
   @Override
   public List<Bbs> findAll(String bcategory, int pageNo, int numOfRows) {
-    return bbsDAO.findAll(bcategory, pageNo, numOfRows);
+    return bbsDAO.findAll(bcategory,pageNo,numOfRows);
   }
 
   @Override
@@ -69,12 +67,12 @@ public class BbsSVCImpl implements BbsSVC {
 
   @Override
   public int updateById(Long bbsId, Bbs bbs) {
-    return bbsDAO.updateById(bbsId, bbs);
+    return bbsDAO.updateById(bbsId,bbs);
   }
 
   @Override
   public int updateStep(Long bgroup, Bbs parentBbs) {
-    return bbsDAO.updateStep(bgroup, parentBbs);
+    return bbsDAO.updateStep(bgroup,parentBbs);
   }
 
   @Override
