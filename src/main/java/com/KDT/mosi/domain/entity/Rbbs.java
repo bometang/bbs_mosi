@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class BbsComment {
+public class Rbbs {
   private Long rbbsId;
   private Long bbsId;
   private String status;

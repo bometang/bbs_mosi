@@ -61,6 +61,20 @@ public class ApiBbsController {
     return ResponseEntity.ok(bbsApiResponse);  //상태코드 200, 응답메세지Body:bbsApiResponse객채가 json포맷 문자열로 변환됨
   }
 
+  //게시글 조회
+  @GetMapping("/{id}/view")
+//  @ResponseBody   // 응답메세지 body에 자바 객체를 json포맷 문자열로 변환
+  public ResponseEntity<ApiResponse<Bbs>> view(@PathVariable("id") Long id) {
+
+    bbsSVC.increaseHit(id);
+    Optional<Bbs> optionalBbs = bbsSVC.findById(id);
+    Bbs findedBbs = optionalBbs.orElseThrow();  // 찾고자하는 게시글이 없으면 NoSuchElementException 예외발생
+
+    ApiResponse<Bbs> bbsApiResponse = ApiResponse.of(ApiResponseCode.SUCCESS, findedBbs);
+
+    return ResponseEntity.ok(bbsApiResponse);  //상태코드 200, 응답메세지Body:bbsApiResponse객채가 json포맷 문자열로 변환됨
+  }
+
   //게시글 수정      //   PATCH   /bbs/{id} =>  PATCH http://localhost:9080/api/bbs/{id}
   @PatchMapping("/{id}")
   public ResponseEntity<ApiResponse<Bbs>> updateById(

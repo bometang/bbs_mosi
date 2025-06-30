@@ -25,45 +25,51 @@ import java.util.Optional;
 public class BbsDAOImpl implements BbsDAO {
   final private NamedParameterJdbcTemplate template;
 
-
-
-  /**
-   * 게시글 등록
-   * @param bbs
-   * @return 게시글 번호
-   */
   @Override
   public Long save(Bbs bbs) {
-
-    StringBuffer sql = new StringBuffer();
     boolean parentsBbs = bbs.getPbbsId() != null;
     String statusBbs = bbs.getStatus();
 
-    // 게시글 등록시 일반글이면 if로 등록하고 답글이면 else로 등록함.
+    if (parentsBbs) {
+      // 1) 부모 조회
+      Bbs parent = this.findById(bbs.getPbbsId())
+          .orElseThrow(() -> new IllegalArgumentException("부모 게시글이 없습니다. id=" + bbs.getPbbsId()));
+
+      // 2) step 계산 및 기존 답글 shift
+      int newStep = this.updateStep(parent.getBgroup(), parent);
+
+      // 3) 계층 정보 세팅
+      bbs.setBgroup(parent.getBgroup());
+      bbs.setStep((long)newStep);
+      bbs.setBindent(parent.getBindent() + 1);
+    }
+    // else { /* 아무것도 안 해도 됩니다 */ }
+
+    // — SQL 조립 (원래 쓰시던 구조 그대로) —
+    StringBuffer sql = new StringBuffer();
     if ("B0201".equals(statusBbs)) {
       if (!parentsBbs) {
-        sql.append("INSERT INTO bbs (bbs_id,bcategory,status,title,member_id,bcontent,pbbs_id,bgroup,step,bindent) ");
-        sql.append("VALUES (bbs_bbs_id_seq.nextval,:bcategory,'B0201',:title,:memberId,:bcontent,null,bbs_bbs_id_seq.CURRVAL,0,0) ");
+        sql.append("INSERT INTO bbs (bbs_id, bcategory, status, title, member_id, bcontent, pbbs_id, bgroup, step, bindent) ")
+            .append("VALUES (bbs_bbs_id_seq.nextval, :bcategory, 'B0201', :title, :memberId, :bcontent, NULL, bbs_bbs_id_seq.CURRVAL, 0, 0)");
       } else {
-        sql.append("INSERT INTO bbs (bbs_id,bcategory,status,title,member_id,bcontent,pbbs_id,bgroup,step,bindent) ");
-        sql.append("VALUES (bbs_bbs_id_seq.nextval,:bcategory,'B0201',:title,:memberId,:bcontent,:pbbsId,:bgroup,:step,:bindent) ");
+        sql.append("INSERT INTO bbs (bbs_id, bcategory, status, title, member_id, bcontent, pbbs_id, bgroup, step, bindent) ")
+            .append("VALUES (bbs_bbs_id_seq.nextval, :bcategory, 'B0201', :title, :memberId, :bcontent, :pbbsId, :bgroup, :step, :bindent)");
       }
-    } else if ("B0203".equals(statusBbs)) {
-      sql.append("INSERT INTO bbs (bbs_id,bcategory,status,title,member_id,bcontent,pbbs_id,bgroup,step,bindent) ");
-      sql.append("VALUES (bbs_bbs_id_seq.nextval,:bcategory,'B0203',:title,:memberId,:bcontent,:pbbsId,:bgroup,:step,:bindent) ");
+    }
+    else if ("B0203".equals(statusBbs)) {
+      sql.append("INSERT INTO bbs (bbs_id, bcategory, status, title, member_id, bcontent, pbbs_id, bgroup, step, bindent) ")
+          .append("VALUES (bbs_bbs_id_seq.nextval, :bcategory, 'B0203', :title, :memberId, :bcontent, :pbbsId, :bgroup, :step, :bindent)");
     }
 
-
+    // 파라미터 바인딩 & 실행
     SqlParameterSource param = new BeanPropertySqlParameterSource(bbs);
-
-
     KeyHolder keyHolder = new GeneratedKeyHolder();
-    long rows = template.update(sql.toString(),param, keyHolder, new String[]{"bbs_id"} );
+    template.update(sql.toString(), param, keyHolder, new String[]{"bbs_id"});
 
-    Number pidNumber = (Number)keyHolder.getKeys().get("bbs_id");
-    long pid = pidNumber.longValue();
-    return pid;
+    Number key = (Number)keyHolder.getKeys().get("bbs_id");
+    return key.longValue();
   }
+
 
   /**
    * 게시글 전체 목록
