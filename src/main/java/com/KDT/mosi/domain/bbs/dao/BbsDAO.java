@@ -44,4 +44,7 @@ public interface BbsDAO {
 
   //조회수 증가
   public int increaseHit(Long id);
+
+  //중복확인
+  public boolean existsDuplicateRecent(String title, String bcontent);
 }

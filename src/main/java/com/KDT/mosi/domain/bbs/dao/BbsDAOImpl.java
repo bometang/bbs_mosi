@@ -404,4 +404,34 @@ public class BbsDAOImpl implements BbsDAO {
     SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
     return template.update(sql, param);
   }
+
+  /**
+   * 최근 10건 안에 같은 제목·내용이 존재하는지
+   * @param title    새 글 제목
+   * @param bcontent 새 글 내용
+   * @return true  : 중복 있음
+   *         false : 중복 없음
+   */
+  @Override
+  public boolean existsDuplicateRecent(String title, String bcontent) {
+
+    StringBuffer sql = new StringBuffer();
+    sql.append("SELECT COUNT(*)                                        ");
+    sql.append("  FROM ( SELECT title, bcontent                        ");
+    sql.append("           FROM bbs                                   ");
+    sql.append("          WHERE status <> 'B0203'                     ");
+    sql.append("          ORDER BY create_date DESC                   ");
+    sql.append("          FETCH FIRST 10 ROWS ONLY )                  ");
+    sql.append(" WHERE title   = :title                               ");
+    sql.append("   AND bcontent = :bcontent                           ");
+
+    Map<String, Object> param = Map.of(
+        "title",    title,
+        "bcontent", bcontent
+    );
+
+    Integer cnt = template.queryForObject(sql.toString(), param, Integer.class);
+    return cnt != null && cnt > 0;
+  }
+
 }

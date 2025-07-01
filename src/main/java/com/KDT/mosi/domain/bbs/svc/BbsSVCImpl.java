@@ -17,6 +17,25 @@ public class BbsSVCImpl implements BbsSVC{
 
   @Override
   public Long save(Bbs bbs) {
+    // ① 답글이라면 부모 글을 미리 조회해 규칙만 확인
+    if (bbs.getPbbsId() != null) {
+      Bbs parent = bbsDAO.findById(bbs.getPbbsId())
+          .orElseThrow(() -> new IllegalArgumentException("부모 글 없음"));
+
+      // ▸ 깊이 2 초과 금지
+      if (parent.getBindent() >= 2) {
+        throw new IllegalStateException("3단계 이상 답글은 허용되지 않습니다.");
+      }
+      // ▸ 닫힌 글(B0201 아님)에는 답글 금지
+      if (!"B0201".equals(parent.getStatus())) {
+        throw new IllegalStateException("닫힌 글에는 답글을 달 수 없습니다.");
+      }
+    }
+
+    // 최근 10건 중복 제목·내용 검사
+    if (bbsDAO.existsDuplicateRecent(bbs.getTitle(), bbs.getBcontent())) {
+      throw new IllegalStateException("최근 10개 안에 동일한 제목/내용의 글이 이미 존재합니다.");
+    }
     return bbsDAO.save(bbs);
   }
 
@@ -79,4 +98,5 @@ public class BbsSVCImpl implements BbsSVC{
   public int increaseHit(Long id) {
     return bbsDAO.increaseHit(id);
   }
+
 }

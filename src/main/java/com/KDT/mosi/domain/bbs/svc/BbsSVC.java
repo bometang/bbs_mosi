@@ -44,4 +44,5 @@ public interface BbsSVC {
 
   //조회수 증가
   public int increaseHit(Long id);
+
 }
