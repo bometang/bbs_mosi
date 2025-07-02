@@ -155,5 +155,19 @@ public class ApiRbbsController {
     ApiResponse<Rbbs> resp = ApiResponse.of(ApiResponseCode.SUCCESS, orig);
     return ResponseEntity.ok(resp);
   }
+
+  @GetMapping("/totCnt")
+  public ResponseEntity<ApiResponse<Integer>> totalCount(@PathVariable("bbsId") Long bbsId) {
+
+    int totalCount = rbbsSVC.getTotalCount(bbsId);
+    ApiResponse<Integer> bbsApiResponse = ApiResponse.of(ApiResponseCode.SUCCESS, totalCount);
+
+    return ResponseEntity.ok(bbsApiResponse);  //상태코드 200, 응답메세지Body:bbsApiResponse객채가 json포맷 문자열로 변환됨
+  }
+
+
+
+
+
 }
 

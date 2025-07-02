@@ -17,7 +17,7 @@ import java.util.Map;
 public class CodeSVCImpl implements CodeSVC{
 
   private final CodeDAO codeDAO;
-  private List<CodeDTO> m01;
+  private List<CodeDTO> b01;
   private Map<CodeId, List<CodeDTO>> codeMap;
 
   @Override
@@ -27,12 +27,12 @@ public class CodeSVCImpl implements CodeSVC{
 
   @PostConstruct  // 생성자 호출후 실행될 메소드에 선언하면 해당 메소드가 자동 호출
   private List<CodeDTO> getM01Code(){
-    log.info("getM01Code() 수행됨!");
-    m01 = codeDAO.loadCodes(CodeId.M01);
-    return m01;
+    log.info("getB01Code() 수행됨!");
+    b01 = codeDAO.loadCodes(CodeId.B01);
+    return b01;
   }
 
-  public List<CodeDTO> getM01() {
-    return m01;
+  public List<CodeDTO> getB01() {
+    return b01;
   }
 }

@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CodeDTO {
   private String codeId;   //코드
-  private String codeName;  //디코드
+  private String decode;  //디코드
 }

@@ -62,8 +62,8 @@ public class RbbsDAOImpl implements RbbsDAO {
   @Override
   public List<Rbbs> findAll(Long bbsId) {
     StringBuffer sql = new StringBuffer();
-    sql.append("SELECT r.rbbs_id, r.bbs_id, r.status, r.prbbs_id, r.bcontent, r.member_id, ")
-        .append("r.bgroup, r.step, r.bindent, r.create_date, r.update_date ")
+    sql.append("SELECT r.rbbs_id as rbbs_id, r.bbs_id as bbs_id, r.status as status, r.prbbs_id as prbbs_id, r.bcontent as bcontent, r.member_id as member_id, ")
+        .append("r.bgroup as bgroup, r.step as step, r.bindent as bindent, r.create_date as create_date, r.update_date as update_date ")
         .append("FROM rbbs r ")
         .append("LEFT JOIN member m ON r.member_id = m.member_id ")
         .append("WHERE r.bbs_id = :bbsId ")
@@ -77,8 +77,8 @@ public class RbbsDAOImpl implements RbbsDAO {
   @Override
   public List<Rbbs> findAll(Long bbsId, int pageNo, int numOfRows) {
     StringBuffer sql = new StringBuffer();
-    sql.append("SELECT r.rbbs_id, r.bbs_id, r.status, r.prbbs_id, r.bcontent, r.member_id, ")
-        .append("r.bgroup, r.step, r.bindent, r.create_date, r.update_date ")
+    sql.append("SELECT r.rbbs_id as rbbs_id, r.bbs_id as bbs_id, r.status as status, r.prbbs_id as prbbs_id, r.bcontent as bcontent, r.member_id as member_id, ")
+        .append("r.bgroup as bgroup, r.step as step, r.bindent as bindent, r.create_date as create_date, r.update_date as update_date ")
         .append("FROM rbbs r ")
         .append("LEFT JOIN member m ON r.member_id = m.member_id ")
         .append("WHERE r.bbs_id = :bbsId ")
@@ -105,8 +105,8 @@ public class RbbsDAOImpl implements RbbsDAO {
   @Override
   public Optional<Rbbs> findById(Long id) {
     StringBuffer sql = new StringBuffer();
-    sql.append("SELECT r.rbbs_id, r.bbs_id, r.status, r.prbbs_id, r.bcontent, r.member_id, ")
-        .append("r.bgroup, r.step, r.bindent, r.create_date, r.update_date ")
+    sql.append("SELECT r.rbbs_id as rbbs_id, r.bbs_id as bbs_id, r.status as status, r.prbbs_id as prbbs_id, r.bcontent as bcontent, r.member_id as member_id, ")
+        .append("r.bgroup as bgroup, r.step as step, r.bindent as bindent, r.create_date as create_date, r.update_date as update_date ")
         .append("FROM rbbs r ")
         .append("WHERE r.rbbs_id = :id");
 

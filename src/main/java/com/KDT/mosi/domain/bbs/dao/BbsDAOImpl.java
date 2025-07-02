@@ -57,8 +57,13 @@ public class BbsDAOImpl implements BbsDAO {
       }
     }
     else if ("B0203".equals(statusBbs)) {
-      sql.append("INSERT INTO bbs (bbs_id, bcategory, status, title, member_id, bcontent, pbbs_id, bgroup, step, bindent) ")
-          .append("VALUES (bbs_bbs_id_seq.nextval, :bcategory, 'B0203', :title, :memberId, :bcontent, :pbbsId, :bgroup, :step, :bindent)");
+      if (!parentsBbs) {
+        sql.append("INSERT INTO bbs (bbs_id, bcategory, status, title, member_id, bcontent, pbbs_id, bgroup, step, bindent) ")
+            .append("VALUES (bbs_bbs_id_seq.nextval, :bcategory, 'B0203', :title, :memberId, :bcontent, NULL, bbs_bbs_id_seq.CURRVAL, 0, 0)");
+      } else {
+        sql.append("INSERT INTO bbs (bbs_id, bcategory, status, title, member_id, bcontent, pbbs_id, bgroup, step, bindent) ")
+            .append("VALUES (bbs_bbs_id_seq.nextval, :bcategory, 'B0203', :title, :memberId, :bcontent, :pbbsId, :bgroup, :step, :bindent)");
+      }
     }
 
     // 파라미터 바인딩 & 실행
@@ -417,13 +422,14 @@ public class BbsDAOImpl implements BbsDAO {
 
     StringBuffer sql = new StringBuffer();
     sql.append("SELECT COUNT(*)                                        ");
-    sql.append("  FROM ( SELECT title, bcontent                        ");
+    sql.append("  FROM ( SELECT title,                                     ");
+    sql.append("                 DBMS_LOB.SUBSTR(bcontent, 4000, 1) AS bcontent_sub ");
     sql.append("           FROM bbs                                   ");
     sql.append("          WHERE status <> 'B0203'                     ");
     sql.append("          ORDER BY create_date DESC                   ");
     sql.append("          FETCH FIRST 10 ROWS ONLY )                  ");
     sql.append(" WHERE title   = :title                               ");
-    sql.append("   AND bcontent = :bcontent                           ");
+    sql.append("   OR bcontent_sub = :bcontent                      ");
 
     Map<String, Object> param = Map.of(
         "title",    title,

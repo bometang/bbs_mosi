@@ -1,6 +1,9 @@
 package com.KDT.mosi.web;
 
 import com.KDT.mosi.domain.bbs.svc.BbsSVC;
+import com.KDT.mosi.domain.common.CodeId;
+import com.KDT.mosi.domain.common.svc.CodeSVC;
+import com.KDT.mosi.domain.dto.CodeDTO;
 import com.KDT.mosi.domain.entity.Bbs;
 import com.KDT.mosi.web.api.ApiResponse;
 import com.KDT.mosi.web.api.ApiResponseCode;
@@ -27,7 +30,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ApiBbsController {
   private final BbsSVC bbsSVC;
-
+  private final CodeSVC codeSVC;
   //게시글 추가
   @PostMapping
   public ResponseEntity<ApiResponse<Bbs>> add(
@@ -203,7 +206,15 @@ public class ApiBbsController {
     return ResponseEntity.ok(bbsApiResponse);  //상태코드 200, 응답메세지Body:bbsApiResponse객채가 json포맷 문자열로 변환됨
   }
 
-
+  /**
+   * 게시판 카테고리 리스트 조회 (CodeId.B01)
+   */
+  @GetMapping("/categories")
+  public ResponseEntity<ApiResponse<List<CodeDTO>>> categories() {
+    List<CodeDTO> list = codeSVC.getCodes(CodeId.B01);
+    return ResponseEntity
+        .ok(ApiResponse.of(ApiResponseCode.SUCCESS, list));
+  }
 
 
 

@@ -97,4 +97,21 @@ public class LoginController {
 
     return res;
   }
+  /**
+   * 현재 세션에 저장된 로그인 정보 반환 (AJAX 용)
+   * - 로그인 상태: { header.rtcd="S00", body: LoginMember }
+   * - 비로그인 상태: { header.rtcd="S00", body: null }
+   */
+  @GetMapping("/api/auth/user")
+  @ResponseBody
+  public ResponseEntity<ApiResponse<LoginMember>> currentUser(HttpServletRequest request) {
+    HttpSession session = request.getSession(false);
+    LoginMember loginMember = null;
+    if (session != null) {
+      loginMember = (LoginMember) session.getAttribute("loginMember");
+    }
+    // ApiResponse.of(code, body) 를 사용해서 body 에 LoginMember 또는 null 이 담겨 반환됩니다.
+    return ResponseEntity.ok(ApiResponse.of(ApiResponseCode.SUCCESS, loginMember));
+  }
 }
+

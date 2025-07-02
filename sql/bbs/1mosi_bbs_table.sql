@@ -1,64 +1,66 @@
---테이블 삭제				
+--테이블 삭제
+DROP TABLE bbs_image;
 drop table rbbs;
 drop table bbs_like;
 DROP TABLE bbs_report;
 drop table bbs;
+DROP TABLE code;
 
-DROP TABLE member_role;
-DROP TABLE ROLE;
-DROP TABLE MEMBER;
-DROP SEQUENCE member_member_id_seq;
-DROP SEQUENCE rbbs_rbbs_id_seq;
+--DROP TABLE member_role;
+--DROP TABLE ROLE;
+--DROP TABLE MEMBER;
+--DROP SEQUENCE member_member_id_seq;
+
 
 --시퀀스삭제
 drop sequence bbs_bbs_id_seq;
+DROP SEQUENCE bbs_image_bbs_image_id_seq;
+DROP SEQUENCE rbbs_rbbs_id_seq;
 
-DROP TABLE code;
-
--- MEMBER 테이블
-CREATE TABLE member (
-  member_id       NUMBER(10),
-  email           VARCHAR2(40) NOT NULL,
-  name            VARCHAR2(50) NOT NULL,
-  passwd          VARCHAR2(12) NOT NULL,
-  tel             VARCHAR2(13),
-  nickname        VARCHAR2(30),
-  gender          VARCHAR2(6),
-  address         VARCHAR2(200),
-  birth_date      DATE,  -- ✅ 생년월일
-  pic             BLOB,
-  create_date     TIMESTAMP DEFAULT SYSTIMESTAMP,
-  update_date     TIMESTAMP DEFAULT SYSTIMESTAMP
-);
+-- -- MEMBER 테이블
+--CREATE TABLE member (
+--  member_id       NUMBER(10),
+--  email           VARCHAR2(40) NOT NULL,
+--  name            VARCHAR2(50) NOT NULL,
+--  passwd          VARCHAR2(12) NOT NULL,
+--  tel             VARCHAR2(13),
+--  nickname        VARCHAR2(30),
+--  gender          VARCHAR2(6),
+--  address         VARCHAR2(200),
+--  birth_date      DATE,  -- ✅ 생년월일
+--  pic             BLOB,
+--  create_date     TIMESTAMP DEFAULT SYSTIMESTAMP,
+--  update_date     TIMESTAMP DEFAULT SYSTIMESTAMP
+--);
 -- 제약조건 추가
-ALTER TABLE member ADD CONSTRAINT member_member_id_pk PRIMARY KEY (member_id);
-ALTER TABLE member ADD CONSTRAINT member_email_uk UNIQUE(email);
-ALTER TABLE member ADD CONSTRAINT member_gender_ck CHECK (gender IN ('남자','여자'));
-
+--ALTER TABLE member ADD CONSTRAINT member_member_id_pk PRIMARY KEY (member_id);
+--ALTER TABLE member ADD CONSTRAINT member_email_uk UNIQUE(email);
+--ALTER TABLE member ADD CONSTRAINT member_gender_ck CHECK (gender IN ('남자','여자'));
+--
 -- 시퀀스 생성
-CREATE SEQUENCE member_member_id_seq;
-
+--CREATE SEQUENCE member_member_id_seq;
+--
 -- ROLE 테이블
-CREATE TABLE ROLE (
-  ROLE_ID    VARCHAR2(11)  NOT NULL,
-  ROLE_NAME  VARCHAR2(50)  NOT NULL,
-  CONSTRAINT PK_ROLE       PRIMARY KEY (ROLE_ID)
-);
-
-
+--CREATE TABLE ROLE (
+--  ROLE_ID    VARCHAR2(11)  NOT NULL,
+--  ROLE_NAME  VARCHAR2(50)  NOT NULL,
+--  CONSTRAINT PK_ROLE       PRIMARY KEY (ROLE_ID)
+--);
+--
+--
 -- MEMBER_ROLE 테이블 (회원·역할 매핑)
-CREATE TABLE MEMBER_ROLE (
-  MEMBER_ID  NUMBER(10)    NOT NULL,
-  ROLE_ID    VARCHAR2(11)  NOT NULL,
-  CONSTRAINT PK_MEMBER_ROLE           PRIMARY KEY (MEMBER_ID, ROLE_ID),
-  CONSTRAINT FK_MR_ROLE               FOREIGN KEY (ROLE_ID)   REFERENCES ROLE   (ROLE_ID)
-);
-
-ALTER TABLE MEMBER_ROLE
-ADD CONSTRAINT FK_MR_MEMBER
-  FOREIGN KEY (MEMBER_ID)
-  REFERENCES MEMBER (MEMBER_ID)
-  ON DELETE CASCADE;
+--CREATE TABLE MEMBER_ROLE (
+--  MEMBER_ID  NUMBER(10)    NOT NULL,
+--  ROLE_ID    VARCHAR2(11)  NOT NULL,
+--  CONSTRAINT PK_MEMBER_ROLE           PRIMARY KEY (MEMBER_ID, ROLE_ID),
+--  CONSTRAINT FK_MR_ROLE               FOREIGN KEY (ROLE_ID)   REFERENCES ROLE   (ROLE_ID)
+--);
+--
+--ALTER TABLE MEMBER_ROLE
+--ADD CONSTRAINT FK_MR_MEMBER
+--  FOREIGN KEY (MEMBER_ID)
+--  REFERENCES MEMBER (MEMBER_ID)
+--  ON DELETE CASCADE;
 
 --------------------------------------------------------
 --코드
@@ -189,6 +191,7 @@ CREATE TABLE rbbs (
   bbs_id       NUMBER(10)     NOT NULL,               -- 원글 ID
   member_id    NUMBER(10)     NOT NULL,               -- 작성자 회원 ID
   status       VARCHAR2(11),                            -- 댓글 상태 코드
+  prbbs_id     NUMBER(10),
   bcontent     CLOB           NOT NULL,               -- 댓글 내용
   bgroup       NUMBER(10),                              -- 부모 댓글 ID (self reference)
   step         NUMBER(3)      NOT NULL,               -- 출력 순서
@@ -224,4 +227,21 @@ ALTER TABLE rbbs
 -- 시퀀스 생성
 CREATE SEQUENCE rbbs_rbbs_id_seq;
 --------------------------------------------------------
+
+--------------------------------------------------------
+-- 게시글 사진 테이블 생성
+--------------------------------------------------------
+CREATE TABLE bbs_image (
+  image_id    NUMBER(10)       PRIMARY KEY,
+  bbs_id      NUMBER(10)       NOT NULL,
+  sort_order  NUMBER(5)        NOT NULL,      -- 본문 내 삽입 순서
+  file_path   VARCHAR2(2000)   NOT NULL,
+  original_name VARCHAR2(255),
+  saved_name    VARCHAR2(255),
+  uploaded_at TIMESTAMP        DEFAULT SYSTIMESTAMP,
+  FOREIGN KEY (bbs_id) REFERENCES bbs(bbs_id)
+);
+
+-- 시퀀스 생성
+CREATE SEQUENCE bbs_image_bbs_image_id_seq;
 

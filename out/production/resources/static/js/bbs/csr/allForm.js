@@ -1,25 +1,51 @@
 import { ajax, PaginationUI } from '/js/common.js';
 
-let currentPage = 1; // 현재 페이지
-const recordsPerPage = 10;        // 페이지당 레코드수
-const pagesPerPage = 10;          // 한페이지당 페이지수
+let currentPage = 1;
+const recordsPerPage = 10;
+const pagesPerPage   = 10;
 
 // --- ① 버튼 영역 생성 & 추가 ---
 const $controls = document.createElement('div');
 $controls.setAttribute('id', 'controls');
+$controls.style.display = 'flex';
+$controls.style.justifyContent = 'space-between';
+$controls.style.alignItems = 'center';
 $controls.style.margin = '20px';
 document.body.appendChild($controls);
 
-// 버튼 생성
+// (1-1) 로그인 사용자 정보 표시 영역
+const $userInfo = document.createElement('div');
+$userInfo.setAttribute('id', 'user-info');
+$userInfo.style.fontSize = '0.9rem';
+$userInfo.style.color = '#555';
+$controls.appendChild($userInfo);
+
+// (1-2) 게시글 등록 버튼
 const $createBtn = document.createElement('button');
 $createBtn.textContent = '게시글 등록';
 $createBtn.style.padding = '10px 20px';
 $createBtn.style.fontSize = '1rem';
 $createBtn.addEventListener('click', () => {
-  // 등록 페이지로 이동
   location.href = '/csr/bbs/add';
 });
 $controls.appendChild($createBtn);
+
+// 로그인 사용자 정보 가져오기
+async function fetchCurrentUser() {
+  try {
+    const res = await ajax.get('/api/auth/user');
+    if (res.header.rtcd === 'S00' && res.body) {
+      const user = res.body;
+      $userInfo.textContent = `${user.nickname || user.memberId}님 환영합니다.`;
+    } else {
+      $userInfo.innerHTML = `<a href="/login">로그인</a>`;
+    }
+  } catch (err) {
+    console.error('현재 사용자 정보 조회 중 오류:', err);
+    $userInfo.textContent = '';
+  }
+}
+fetchCurrentUser();
 
 // --- ② 리스트와 페이지네이션 컨테이너 ---
 const $list = document.createElement('div');
@@ -47,18 +73,22 @@ const getBbs = async (reqPage, reqRec) => {
   }
 };
 
-// 목록 그리기
+// 목록 그리기 (bindent 만큼 제목에 들여쓰기)
 function displayBbsList(bbs) {
   const makeTr = bbs => bbs
-    .map(b =>
-      `<tr data-pid="${b.bbsId}">
-        <td>${b.bbsId}</td>
-        <td>${b.title}</td>
-        <td>${b.memberId}</td>
-        <td>${b.createDate}</td>
-        <td>${b.updateDate}</td>
-      </tr>`
-    )
+    .map(b => {
+      // bindent 만큼 4개의 &nbsp;를 곱해서 indent 문자열 생성
+      const indent = '&nbsp;'.repeat((b.bindent || 0) * 4);
+      return `
+        <tr data-pid="${b.bbsId}">
+          <td>${b.bbsId}</td>
+          <td>${indent}${b.title}</td>
+          <td>${b.memberId}</td>
+          <td>${b.createDate}</td>
+          <td>${b.updateDate}</td>
+        </tr>
+      `;
+    })
     .join('');
 
   $list.innerHTML = `
@@ -95,7 +125,6 @@ async function configPagination() {
     pagination.setRecordsPerPage(recordsPerPage);
     pagination.setPagesPerPage(pagesPerPage);
 
-    // 첫 페이지 로드
     pagination.handleFirstClick();
   } catch (err) {
     console.error(err);

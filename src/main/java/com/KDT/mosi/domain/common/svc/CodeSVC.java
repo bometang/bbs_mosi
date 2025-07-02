@@ -17,6 +17,6 @@ public interface CodeSVC {
    * M01 코드 정보 가져오기
    * @return M01 코드 정보
    */
-  List<CodeDTO> getM01();
+  List<CodeDTO> getB01();
 
 }

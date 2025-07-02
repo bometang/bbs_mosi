@@ -14,7 +14,7 @@ public class SaveApi {
   @NotBlank(message = "내용은 필수 입니다.")
   private String bcontent;
 
-  private String memberId;
+  private Long memberId;
 
   private String bcategory;
   private String status;
