@@ -105,8 +105,9 @@ function displayBbsList(bbs) {
     </table>`;
 
   $list.querySelectorAll('tbody tr').forEach($tr =>
-    $tr.addEventListener('click', e => {
+    $tr.addEventListener('click', async e => {
       const pid = e.currentTarget.dataset.pid;
+      await ajax.get(`/api/bbs/${pid}/view`);
       location.href = `/csr/bbs/${pid}`;
     })
   );

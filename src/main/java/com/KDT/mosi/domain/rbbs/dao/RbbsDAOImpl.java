@@ -62,7 +62,11 @@ public class RbbsDAOImpl implements RbbsDAO {
   @Override
   public List<Rbbs> findAll(Long bbsId) {
     StringBuffer sql = new StringBuffer();
-    sql.append("SELECT r.rbbs_id as rbbs_id, r.bbs_id as bbs_id, r.status as status, r.prbbs_id as prbbs_id, r.bcontent as bcontent, r.member_id as member_id, ")
+    sql.append("SELECT r.rbbs_id as rbbs_id, r.bbs_id as bbs_id, r.status as status, r.prbbs_id as prbbs_id, r.member_id as member_id, ")
+        .append("CASE ")
+        .append("WHEN r.status = 'R0202' THEN to_clob('삭제된 게시글입니다.') ")
+        .append("ELSE r.bcontent ")
+        .append("END AS bcontent, ")
         .append("r.bgroup as bgroup, r.step as step, r.bindent as bindent, r.create_date as create_date, r.update_date as update_date ")
         .append("FROM rbbs r ")
         .append("LEFT JOIN member m ON r.member_id = m.member_id ")
@@ -77,7 +81,11 @@ public class RbbsDAOImpl implements RbbsDAO {
   @Override
   public List<Rbbs> findAll(Long bbsId, int pageNo, int numOfRows) {
     StringBuffer sql = new StringBuffer();
-    sql.append("SELECT r.rbbs_id as rbbs_id, r.bbs_id as bbs_id, r.status as status, r.prbbs_id as prbbs_id, r.bcontent as bcontent, r.member_id as member_id, ")
+    sql.append("SELECT r.rbbs_id as rbbs_id, r.bbs_id as bbs_id, r.status as status, r.prbbs_id as prbbs_id, r.member_id as member_id, ")
+        .append("CASE ")
+        .append("WHEN r.status = 'R0202' THEN to_clob('삭제된 게시글입니다.') ")
+        .append("ELSE r.bcontent ")
+        .append("END AS bcontent, ")
         .append("r.bgroup as bgroup, r.step as step, r.bindent as bindent, r.create_date as create_date, r.update_date as update_date ")
         .append("FROM rbbs r ")
         .append("LEFT JOIN member m ON r.member_id = m.member_id ")
@@ -105,8 +113,12 @@ public class RbbsDAOImpl implements RbbsDAO {
   @Override
   public Optional<Rbbs> findById(Long id) {
     StringBuffer sql = new StringBuffer();
-    sql.append("SELECT r.rbbs_id as rbbs_id, r.bbs_id as bbs_id, r.status as status, r.prbbs_id as prbbs_id, r.bcontent as bcontent, r.member_id as member_id, ")
-        .append("r.bgroup as bgroup, r.step as step, r.bindent as bindent, r.create_date as create_date, r.update_date as update_date ")
+    sql.append("SELECT r.rbbs_id as rbbs_id, r.bbs_id as bbs_id, r.status as status, r.prbbs_id as prbbs_id,r.bindent as bindent,  r.member_id as member_id, ")
+        .append("CASE ")
+        .append("WHEN r.status = 'R0202' THEN to_clob('삭제된 게시글입니다.') ")
+        .append("ELSE r.bcontent ")
+        .append("END AS bcontent, ")
+        .append("r.bgroup as bgroup, r.step as step,  r.create_date as create_date, r.update_date as update_date ")
         .append("FROM rbbs r ")
         .append("WHERE r.rbbs_id = :id");
 
@@ -148,7 +160,7 @@ public class RbbsDAOImpl implements RbbsDAO {
     long childBindent = parentRbbs.getBindent() + 1;
     MapSqlParameterSource params = new MapSqlParameterSource()
         .addValue("bgroup", bgroup)
-        .addValue("parentId", parentRbbs.getPrbbsId())
+        .addValue("parentId", parentRbbs.getRbbsId())
         .addValue("parentStep", parentRbbs.getStep())
         .addValue("childBindent", childBindent);
 

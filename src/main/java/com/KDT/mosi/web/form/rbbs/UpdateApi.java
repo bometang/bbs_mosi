@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class UpdateApi {
   private Long bbsId;
   @NotBlank(message = "내용은 필수 입니다.")
-  private LocalDateTime udateDate;
   private String bcontent;
+  private LocalDateTime udateDate;
   private Long memberId;
 }

@@ -35,5 +35,11 @@ public class CsrController {
     return "csr/bbs/addForm";
   }
 
+  // 게시글 답글
+  @GetMapping("/bbs/add/{id}")
+  public String updateForm(@PathVariable("id") Long id, Model model) {
+    model.addAttribute("bbsId", id);
+    return "csr/bbs/addForm";
+  }
 
 }
