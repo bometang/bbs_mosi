@@ -11,7 +11,7 @@
   <h3>로 그 인</h3>
   <form action="" method="POST" th:object="${loginForm}">
     <div>
-      <label th:for="email"></label><input type="email" th:field="*{email}">
+      <label th:for="text"></label><input type="text" th:field="*{email}">
       <div class="field-err" th:each="err : ${#fields.errors('email')}">
         <span th:text="${err}"></span>
       </div>

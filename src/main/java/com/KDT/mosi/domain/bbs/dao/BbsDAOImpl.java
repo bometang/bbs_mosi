@@ -36,11 +36,17 @@ public class BbsDAOImpl implements BbsDAO {
           .orElseThrow(() -> new IllegalArgumentException("부모 게시글이 없습니다. id=" + bbs.getPbbsId()));
 
       // 2) step 계산 및 기존 답글 shift
-      int newStep = this.updateStep(parent.getBgroup(), parent);
-
+      // 게시 상태라면 기존 답글 shift
+      if ("B0201".equals(statusBbs)) {
+        int newStep = this.updateStep(parent.getBgroup(), parent);
+        bbs.setStep((long)newStep);
+      } else {
+        // 임시저장일 땐 shift 없이, 부모 기준으로만 +1
+        bbs.setStep(parent.getStep() + 1);
+      }
       // 3) 계층 정보 세팅
+      bbs.setBcategory(parent.getBcategory());
       bbs.setBgroup(parent.getBgroup());
-      bbs.setStep((long)newStep);
       bbs.setBindent(parent.getBindent() + 1);
     }
     // else { /* 아무것도 안 해도 됩니다 */ }

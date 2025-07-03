@@ -30,9 +30,6 @@ public class BbsSVCImpl implements BbsSVC{
       if (!"B0201".equals(parent.getStatus())) {
         throw new IllegalStateException("닫힌 글에는 답글을 달 수 없습니다.");
       }
-      bbs.setBgroup(parent.getBgroup());
-      bbs.setStep((long)newStep);
-      bbs.setBindent(parent.getBindent() + 1);
     }
 
     // 최근 10건 중복 제목·내용 검사

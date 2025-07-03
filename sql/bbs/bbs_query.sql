@@ -1,3 +1,23 @@
+SELECT * FROM bbs;
+
+SELECT * FROM RBBS;
+
+SELECT * FROM bbs_like;
+
+SELECT * FROM bbs_report;
+
+SELECT * FROM bbs WHERE bbs_id >102;
+
+SELECT * FROM RBBS WHERE rbbs_id > 120;
+
+
+SELECT * FROM bbs WHERE bbs_id =97;
+
+
+SELECT * FROM bbs WHERE bgroup =103 ORDER BY step;
+
+
+
 SELECT
   b.bbs_id as bbs_id,
   b.bcategory as bcategory,
@@ -91,5 +111,48 @@ SET status = 'B0202',update_date = systimestamp
 WHERE bbs_id = 36;
 
 SELECT * FROM bbs WHERE bbs_id =36;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

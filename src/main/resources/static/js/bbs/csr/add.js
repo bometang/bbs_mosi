@@ -126,7 +126,7 @@ async function displayForm() {
     if (!data.title.trim() && !data.bcontent.trim()) {
       return alert('제목 또는 내용을 입력해야 임시 저장할 수 있습니다.');
     }
-
+    if (parentId) data.pbbsId = parentId;
     saveDraft(data);
   });
 
