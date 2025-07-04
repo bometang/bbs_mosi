@@ -1,8 +1,8 @@
 INSERT INTO MEMBER (MEMBER_ID, EMAIL, NAME, PASSWD, TEL, NICKNAME, GENDER, ADDRESS)
-VALUES (member_member_id_seq.NEXTVAL, 'test1@kh.com', '김민준',   'qwer1234!', '010-1234-0001', 'minjun',   '남자', '서울시 강남구 삼성동');
+VALUES (member_member_id_seq.NEXTVAL, 'a', '김민준',   'a', '010-1234-0001', 'minjun',   '남자', '서울시 강남구 삼성동');
 
 INSERT INTO MEMBER (MEMBER_ID, EMAIL, NAME, PASSWD, TEL, NICKNAME, GENDER, ADDRESS)
-VALUES (member_member_id_seq.NEXTVAL, 'test2@kh.com', '이서현',   'qwer1234!', '010-1234-0002', 'seohyun',  '여자', '서울시 마포구 상수동');
+VALUES (member_member_id_seq.NEXTVAL, 'ㅁ', '이서현',   'ㅁ', '010-1234-0002', 'seohyun',  '여자', '서울시 마포구 상수동');
 
 INSERT INTO MEMBER (MEMBER_ID, EMAIL, NAME, PASSWD, TEL, NICKNAME, GENDER, ADDRESS)
 VALUES (member_member_id_seq.NEXTVAL, 'test3@kh.com', '박지훈',   'qwer1234!', '010-1234-0003', 'jhoon',    '남자', '부산시 해운대구 우동');

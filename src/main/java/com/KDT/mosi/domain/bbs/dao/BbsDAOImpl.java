@@ -447,4 +447,61 @@ public class BbsDAOImpl implements BbsDAO {
     return cnt != null && cnt > 0;
   }
 
+  @Override
+  public Optional<Bbs> findTemporaryStorageById(Long memberId, Long pbbsId) {
+    //sql
+    StringBuffer sql = new StringBuffer();
+    sql.append("SELECT ");
+    sql.append("b.bbs_id as bbs_id, ");
+    sql.append("b.bcategory as bcategory, ");
+    sql.append("b.status as status, ");
+    sql.append("b.title as title, ");
+    sql.append("NVL(m.member_id, 0) AS member_id, ");
+    sql.append("b.hit AS hit, ");
+    sql.append("b.bcontent as bcontent, ");
+    sql.append("b.pbbs_id AS pbbs_id, ");
+    sql.append("b.bgroup AS bgroup, ");
+    sql.append("b.step AS step, ");
+    sql.append("b.bindent AS bindent, ");
+    sql.append("b.create_date AS create_date, ");
+    sql.append("b.update_date as update_date ");
+    sql.append("FROM bbs b ");
+    sql.append("LEFT JOIN member m ");
+    sql.append("ON b.member_id = m.member_id ");
+    sql.append("where b.member_id = :memberId ");
+    sql.append("and b.status = 'B0203' ");
+    sql.append("and NVL(b.pbbs_id, 0) = NVL(:pbbsId, 0) ");
+
+    Long safePbbsId = (pbbsId != null) ? pbbsId : 0L;
+
+    SqlParameterSource param = new MapSqlParameterSource()
+        .addValue("memberId",memberId)
+        .addValue("pbbsId",   safePbbsId);
+
+    Bbs bbs = null;
+    try {
+      bbs = template.queryForObject(sql.toString(), param, BeanPropertyRowMapper.newInstance(Bbs.class));
+    } catch (EmptyResultDataAccessException e) { //template.queryForObject() : 레코드를 못찾으면 예외 발생
+      return Optional.empty();
+    }
+
+    return Optional.of(bbs);
+  }
+
+  @Override
+  public int deleteTemporaryStorage(Long memberId, Long pbbsId) {
+    Long safePbbsId = (pbbsId != null) ? pbbsId : 0L;
+    StringBuffer sql = new StringBuffer();
+    sql.append("DELETE FROM bbs ");
+    sql.append(" WHERE member_id = :memberId ");
+    sql.append("   AND status    = 'B0203' ");
+    sql.append("   AND NVL(pbbs_id, 0) = NVL(:pbbsId, 0)");
+
+    MapSqlParameterSource param = new MapSqlParameterSource()
+        .addValue("memberId", memberId)
+        .addValue("pbbsId",   safePbbsId);
+
+    return template.update(sql.toString(), param);
+  }
+
 }

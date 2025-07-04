@@ -2,21 +2,33 @@
 import { ajax } from '/js/common.js';
   const parentIdAttr = document.body.dataset.parentId;
   const parentId     = parentIdAttr ? Number(parentIdAttr) : null;
+let parentCategory = null;
+if (parentId) {
+  try {
+    const res = await ajax.get(`/api/bbs/${parentId}`);
+    if (res.header.rtcd === 'S00') {
+      parentCategory = res.body.bcategory;
+    }
+  } catch (e) {
+    console.error('원글 정보 로드 실패', e);
+  }
+}
 
 async function addBbs(data) {
-  // 정식 등록 시 status=B0201
   data.status = 'B0201';
   console.log('▶ addBbs 호출, data=', data);
+  // 부모가 있으면 SaveApi.pbbsId 로 바인딩되어 답글 처리됩니다.
   const { header } = await ajax.post('/api/bbs', data);
   if (header.rtcd === 'S00') {
-    window.location.href = '/csr/bbs';  // 등록 성공 후 목록으로
+    window.location.href = parentId
+      ? `/csr/bbs/${parentId}`   // 답글인 경우 원글 상세로
+      : '/csr/bbs';              // 새 글인 경우 목록으로
   } else {
     alert(header.rtmsg);
   }
 }
 
 async function saveDraft(data) {
-  // 임시 저장 시 status=B0203
   data.status = 'B0203';
   console.log('▶ saveDraft 호출, data=', data);
   const { header } = await ajax.post('/api/bbs', data);
@@ -79,6 +91,14 @@ async function displayForm() {
         categorySelect.appendChild(opt);
       });
     }
+    if (parentCategory) {
+      categorySelect.value = parentCategory;
+      categorySelect.setAttribute('disabled', '');
+    }
+
+
+
+
   } catch (e) {
     console.error('카테고리 로드 실패', e);
   }
@@ -88,8 +108,11 @@ async function displayForm() {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(frm).entries());
 
+    if (parentId) data.pbbsId = parentId;
     if (!data.title.trim())      return alert('제목은 필수입니다.');
-    if (!data.bcategory.trim())  return alert('카테고리를 선택하세요.');
+    if (!parentId && (!data.bcategory || !data.bcategory.trim())) {
+      return alert('카테고리를 선택하세요.');
+    }
     if (!data.bcontent.trim())   return alert('내용은 필수입니다.');
 
     addBbs(data);
@@ -103,7 +126,7 @@ async function displayForm() {
     if (!data.title.trim() && !data.bcontent.trim()) {
       return alert('제목 또는 내용을 입력해야 임시 저장할 수 있습니다.');
     }
-
+    if (parentId) data.pbbsId = parentId;
     saveDraft(data);
   });
 

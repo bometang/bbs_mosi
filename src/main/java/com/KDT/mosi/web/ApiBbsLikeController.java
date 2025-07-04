@@ -26,7 +26,7 @@ public class ApiBbsLikeController {
    */
   @PostMapping
   public ResponseEntity<ApiResponse<String>> toggle(
-      @PathVariable Long bbsId,
+      @PathVariable("bbsId") Long bbsId,
       HttpSession session
   ) {
     LoginMember loginMember = (LoginMember) session.getAttribute("loginMember");
@@ -44,7 +44,7 @@ public class ApiBbsLikeController {
    * GET /api/bbs/{bbsId}/likes/count
    */
   @GetMapping("/count")
-  public ResponseEntity<ApiResponse<Integer>> count(@PathVariable Long bbsId) {
+  public ResponseEntity<ApiResponse<Integer>> count(@PathVariable("bbsId") Long bbsId) {
     int total = bbsLikeSVC.getTotalCountLike(bbsId);
     return ResponseEntity.ok(ApiResponse.of(ApiResponseCode.SUCCESS, total));
   }

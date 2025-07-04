@@ -179,12 +179,72 @@ async function displayReadForm() {
       <button id="btnEdit" type="button">수정</button>
       <button id="btnDelete" type="button">삭제</button>
       <button id="btnReply"  type="button">답글</button>
+      <button id="btnLike"   type="button">좋아요</button>
+      <span id="likeCount">0</span>
+      <button id="btnReport" type="button">신고</button>
     `;
 
     const $btnDelete = $btns.querySelector('#btnDelete');
     const $btnEdit = $btns.querySelector('#btnEdit');
     const $btnReply  = $btns.querySelector('#btnReply');
+    const $btnLike   = $btns.querySelector('#btnLike');
+    const $btnReport = $btns.querySelector('#btnReport');
+    const $likeCount    = $btns.querySelector('#likeCount');
 
+    $btnLike.onclick = async () => {
+      try {
+        // 1) 토글 호출
+        const { header, body: action } = await ajax.post(
+          `/api/bbs/${postBoard.bbsId}/likes`
+        );
+        if (header.rtcd !== 'S00') {
+          return alert(header.rtmsg);
+        }
+
+        // 2) 버튼 텍스트 토글
+        //    action이 "CREATED"면 좋아요 → 좋아요 취소,
+        //    "DELETED"면 좋아요 취소 → 좋아요
+        $btnLike.textContent = action === 'CREATED'
+          ? '좋아요 취소'
+          : '좋아요';
+
+        // 3) 현재 좋아요 수 조회
+        const cntRes = await ajax.get(
+          `/api/bbs/${postBoard.bbsId}/likes/count`
+        );
+        if (cntRes.header.rtcd === 'S00') {
+          $likeCount.textContent = cntRes.body;
+        }
+      } catch (e) {
+        console.error('좋아요 토글 오류', e);
+      }
+    };
+
+    $btnReport.onclick = async () => {
+      // 1) 신고 사유 입력
+      const reason = prompt('신고 사유를 입력하세요:');
+      if (!reason || !reason.trim()) {
+        return alert('신고 사유가 필요합니다.');
+      }
+
+      // 2) 최종 확인
+      if (!confirm('정말 신고하시겠습니까?')) return;
+
+      // 3) POST 바디에 reason 포함
+      try {
+        const { header } = await ajax.post(
+          `/api/bbs/${postBoard.bbsId}/report`,
+          { reason }
+        );
+        alert(header.rtcd === 'S00'
+          ? '신고되었습니다.'
+          : header.rtmsg
+        );
+      } catch (err) {
+        console.error('신고 오류', err);
+        alert('신고 중 오류가 발생했습니다.');
+      }
+    };
 
     //답글
     $btnReply.onclick = () => window.location.href = `/csr/bbs/add/${postBoard.bbsId}`;
@@ -588,16 +648,38 @@ async function displayPostCommentList(postComments) {
 
       // 좋아요 버튼
       $btnCell.querySelector('.btnLikeComment').onclick = async () => {
-        await ajax.post(`/api/bbs/${pid}/comments/${cid}/like`);
+        await ajax.post(`/api/bbs/comments/${cid}/likes`);
         // UI 업데이트(예: 버튼 토글, 카운트 리프레시) 로직 추가
       };
 
-      // 신고 버튼
-      $btnCell.querySelector('.btnReportComment').onclick = async () => {
-         if (!confirm('이 댓글을 신고하시겠습니까?')) return;
-         await ajax.post(`/api/bbs/${pid}/comments/${cid}/report`);
-        alert('신고가 접수되었습니다.');
-      };
+    $btnCell.querySelector('.btnReportComment').onclick = async () => {
+      // 1) 신고 사유 입력
+      const reason = prompt('신고 사유를 입력하세요:');
+      if (!reason || !reason.trim()) {
+        return alert('신고 사유가 필요합니다.');
+      }
+
+      // 2) 최종 확인
+      if (!confirm('정말 신고하시겠습니까?')) return;
+
+      // 3) POST 바디에 reason 포함
+      try {
+        const { header } = await ajax.post(
+          `/api/bbs/comments/${cid}/report`,
+          { reason }
+        );
+        alert(header.rtcd === 'S00'
+          ? '신고되었습니다.'
+          : header.rtmsg
+        );
+      } catch (err) {
+        console.error('신고 오류', err);
+        alert('신고 중 오류가 발생했습니다.');
+      }
+    };
+
+
+
 
       // 답글 버튼
       $btnCell.querySelector('.btnReplyComment').onclick = () => {
@@ -655,13 +737,3 @@ async function displayPostCommentList(postComments) {
 
 };
 configPagination();
-
-
-
-
-
-
-
-
-
-

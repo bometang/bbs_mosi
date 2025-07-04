@@ -1,4 +1,6 @@
 --테이블 삭제
+DROP TABLE rbbs_like;
+DROP TABLE rbbs_report;
 DROP TABLE bbs_image;
 drop table rbbs;
 drop table bbs_like;
@@ -6,61 +8,63 @@ DROP TABLE bbs_report;
 drop table bbs;
 DROP TABLE code;
 
---DROP TABLE member_role;
---DROP TABLE ROLE;
---DROP TABLE MEMBER;
---DROP SEQUENCE member_member_id_seq;
+DROP TABLE member_role;
+DROP TABLE ROLE;
+DROP TABLE MEMBER;
+DROP SEQUENCE member_member_id_seq;
 
-
+--DROP TABLE terms;
+--DROP TABLE MEMBER_TERMS;
+--DROP SEQUENCE terms_seq;
 --시퀀스삭제
 drop sequence bbs_bbs_id_seq;
 DROP SEQUENCE bbs_image_bbs_image_id_seq;
 DROP SEQUENCE rbbs_rbbs_id_seq;
 
--- -- MEMBER 테이블
---CREATE TABLE member (
---  member_id       NUMBER(10),
---  email           VARCHAR2(40) NOT NULL,
---  name            VARCHAR2(50) NOT NULL,
---  passwd          VARCHAR2(12) NOT NULL,
---  tel             VARCHAR2(13),
---  nickname        VARCHAR2(30),
---  gender          VARCHAR2(6),
---  address         VARCHAR2(200),
---  birth_date      DATE,  -- ✅ 생년월일
---  pic             BLOB,
---  create_date     TIMESTAMP DEFAULT SYSTIMESTAMP,
---  update_date     TIMESTAMP DEFAULT SYSTIMESTAMP
---);
+ -- MEMBER 테이블
+CREATE TABLE member (
+  member_id       NUMBER(10),
+  email           VARCHAR2(40) NOT NULL,
+  name            VARCHAR2(50) NOT NULL,
+  passwd          VARCHAR2(12) NOT NULL,
+  tel             VARCHAR2(13),
+  nickname        VARCHAR2(30),
+  gender          VARCHAR2(6),
+  address         VARCHAR2(200),
+  birth_date      DATE,  -- ✅ 생년월일
+  pic             BLOB,
+  create_date     TIMESTAMP DEFAULT SYSTIMESTAMP,
+  update_date     TIMESTAMP DEFAULT SYSTIMESTAMP
+);
 -- 제약조건 추가
---ALTER TABLE member ADD CONSTRAINT member_member_id_pk PRIMARY KEY (member_id);
---ALTER TABLE member ADD CONSTRAINT member_email_uk UNIQUE(email);
---ALTER TABLE member ADD CONSTRAINT member_gender_ck CHECK (gender IN ('남자','여자'));
---
+ALTER TABLE member ADD CONSTRAINT member_member_id_pk PRIMARY KEY (member_id);
+ALTER TABLE member ADD CONSTRAINT member_email_uk UNIQUE(email);
+ALTER TABLE member ADD CONSTRAINT member_gender_ck CHECK (gender IN ('남자','여자'));
+
 -- 시퀀스 생성
---CREATE SEQUENCE member_member_id_seq;
---
+CREATE SEQUENCE member_member_id_seq;
+
 -- ROLE 테이블
---CREATE TABLE ROLE (
---  ROLE_ID    VARCHAR2(11)  NOT NULL,
---  ROLE_NAME  VARCHAR2(50)  NOT NULL,
---  CONSTRAINT PK_ROLE       PRIMARY KEY (ROLE_ID)
---);
---
---
+CREATE TABLE ROLE (
+  ROLE_ID    VARCHAR2(11)  NOT NULL,
+  ROLE_NAME  VARCHAR2(50)  NOT NULL,
+  CONSTRAINT PK_ROLE       PRIMARY KEY (ROLE_ID)
+);
+
+
 -- MEMBER_ROLE 테이블 (회원·역할 매핑)
---CREATE TABLE MEMBER_ROLE (
---  MEMBER_ID  NUMBER(10)    NOT NULL,
---  ROLE_ID    VARCHAR2(11)  NOT NULL,
---  CONSTRAINT PK_MEMBER_ROLE           PRIMARY KEY (MEMBER_ID, ROLE_ID),
---  CONSTRAINT FK_MR_ROLE               FOREIGN KEY (ROLE_ID)   REFERENCES ROLE   (ROLE_ID)
---);
---
---ALTER TABLE MEMBER_ROLE
---ADD CONSTRAINT FK_MR_MEMBER
---  FOREIGN KEY (MEMBER_ID)
---  REFERENCES MEMBER (MEMBER_ID)
---  ON DELETE CASCADE;
+CREATE TABLE MEMBER_ROLE (
+  MEMBER_ID  NUMBER(10)    NOT NULL,
+  ROLE_ID    VARCHAR2(11)  NOT NULL,
+  CONSTRAINT PK_MEMBER_ROLE           PRIMARY KEY (MEMBER_ID, ROLE_ID),
+  CONSTRAINT FK_MR_ROLE               FOREIGN KEY (ROLE_ID)   REFERENCES ROLE   (ROLE_ID)
+);
+
+ALTER TABLE MEMBER_ROLE
+ADD CONSTRAINT FK_MR_MEMBER
+  FOREIGN KEY (MEMBER_ID)
+  REFERENCES MEMBER (MEMBER_ID)
+  ON DELETE CASCADE;
 
 --------------------------------------------------------
 --코드
@@ -226,6 +230,55 @@ ALTER TABLE rbbs
 
 -- 시퀀스 생성
 CREATE SEQUENCE rbbs_rbbs_id_seq;
+--------------------------------------------------------
+
+--------------------------------------------------------
+--댓글 좋아요 테이블
+--------------------------------------------------------
+CREATE TABLE rbbs_like (
+rbbs_id      NUMBER(10)    NOT NULL,
+member_id    NUMBER(10)    NOT NULL,
+create_date  TIMESTAMP     DEFAULT SYSTIMESTAMP NOT NULL,
+CONSTRAINT rpk_bbs_like       PRIMARY KEY (rbbs_id, member_id)
+);
+
+-- 게시글 아이디 외래키 지정
+ALTER TABLE rbbs_like
+ADD CONSTRAINT fk_rbbs_like_bbs
+FOREIGN KEY (rbbs_id)
+REFERENCES rbbs(RBBS_ID);
+--
+
+-- 작성자 아이디 외래키 지정
+ALTER TABLE rbbs_like
+ADD CONSTRAINT fk_rbbs_like_mem
+FOREIGN KEY (member_id)
+REFERENCES member(member_id);
+--------------------------------------------------------
+
+--------------------------------------------------------
+-- 댓글 신고 테이블
+--------------------------------------------------------
+CREATE TABLE rbbs_report (
+rbbs_id     NUMBER(10)    NOT NULL,
+member_id   NUMBER(10)    NOT NULL,
+reason      VARCHAR2(300) NULL,
+report_date TIMESTAMP     DEFAULT SYSTIMESTAMP NOT NULL,
+CONSTRAINT pk_rbbs_report       PRIMARY KEY (rbbs_id, member_id)
+);
+
+-- 게시글 아이디 외래키 지정
+ALTER TABLE rbbs_report
+ADD CONSTRAINT fk_rbbs_report_bbs
+FOREIGN KEY (rbbs_id)
+REFERENCES rbbs(RBBS_ID);
+--
+
+-- 작성자 아이디 외래키 지정
+ALTER TABLE rbbs_report
+ADD CONSTRAINT fk_rbbs_report_mem
+FOREIGN KEY (member_id)
+REFERENCES member(member_id);
 --------------------------------------------------------
 
 --------------------------------------------------------

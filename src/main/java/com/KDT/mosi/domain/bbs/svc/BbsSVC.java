@@ -45,4 +45,10 @@ public interface BbsSVC {
   //조회수 증가
   public int increaseHit(Long id);
 
+  //게시글 임시저장 확인
+  Optional<Bbs> findTemporaryStorageById(Long member_id, Long pbbs_id);
+
+  //게시글 임시저장 삭제
+  int deleteTemporaryStorage(Long memberId, Long pbbsId);
+
 }

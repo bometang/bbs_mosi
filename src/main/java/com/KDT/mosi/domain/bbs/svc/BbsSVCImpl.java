@@ -99,4 +99,14 @@ public class BbsSVCImpl implements BbsSVC{
     return bbsDAO.increaseHit(id);
   }
 
+  @Override
+  public Optional<Bbs> findTemporaryStorageById(Long member_id, Long pbbs_id) {
+    return bbsDAO.findTemporaryStorageById(member_id, pbbs_id);
+  }
+
+  @Override
+  public int deleteTemporaryStorage(Long memberId, Long pbbsId) {
+    return bbsDAO.deleteTemporaryStorage(memberId, pbbsId);
+  }
+
 }

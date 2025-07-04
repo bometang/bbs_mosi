@@ -5,15 +5,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7fc470a1-286f-4360-ab34-5292c3cb0de6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/entity/RbbsLike.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/entity/RbbsReport.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/rbbsLike/dao/RBbsLikeDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/rbbsLike/dao/RBbsLikeDAOImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/rbbsLike/svc/RBbsLikeSVC.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/rbbsLike/svc/RBbsLikeSVCImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/rbbsReport/dao/RBbsReportDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/rbbsReport/dao/RBbsReportDAOImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/rbbsReport/svc/RBbsReportSVC.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/rbbsReport/svc/RBbsReportSVCImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/web/ApiBbsReportController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/web/ApiRBbsLikeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/web/ApiRBbsReportController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/web/form/bbsReport/Report.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/web/form/rbbsReport/RBbsReport.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/bbs/csr/detailForm_bak.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/web/form/login/LoginForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/web/form/login/LoginForm.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/domain/bbs/dao/BbsDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/domain/bbs/dao/BbsDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/domain/bbs/dao/BbsDAOImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/domain/bbs/dao/BbsDAOImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/domain/bbs/svc/BbsSVC.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/domain/bbs/svc/BbsSVC.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/domain/bbs/svc/BbsSVCImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/domain/bbs/svc/BbsSVCImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/web/ApiBbsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/web/ApiBbsController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/web/ApiBbsLikeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/KDT/mosi/web/ApiBbsLikeController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/resources/static/js/bbs/csr/add.js" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/static/js/bbs/csr/add.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/resources/static/js/bbs/csr/add_bak.js" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/static/js/bbs/csr/add_bak.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/resources/static/js/bbs/csr/detailForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/static/js/bbs/csr/detailForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/bbs/1mosi_bbs_table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/bbs/1mosi_bbs_table.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/bbs/2mosi_bbs_member.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/bbs/2mosi_bbs_member.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sql/bbs/bbs_query.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/bbs/bbs_query.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/bbs/dao/BbsDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/bbs/dao/BbsDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/bbs/dao/BbsDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/bbs/dao/BbsDAOImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/bbs/svc/BbsSVC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/bbs/svc/BbsSVC.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/bbs/svc/BbsSVCImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/bbs/svc/BbsSVCImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/web/form/login/LoginForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/web/form/login/LoginForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/bbsLike/dao/BbsLikeDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/domain/bbsLike/dao/BbsLikeDAOImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/web/ApiBbsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/web/ApiBbsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/web/ApiBbsLikeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/KDT/mosi/web/ApiBbsLikeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/bbs/csr/add.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/bbs/csr/add.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login/loginForm.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login/loginForm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/bbs/csr/add_bak.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/bbs/csr/add_bak.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/bbs/csr/detailForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/bbs/csr/detailForm.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,28 +80,28 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.MosiApplication.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.MosiApplicationTests.testUpdateStepAndShift.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/KDT/projects/junmo/src/main/resources/static/js/bbs/csr&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.MosiApplication.executor": "Run",
+    "JUnit.MosiApplicationTests.testUpdateStepAndShift.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/KDT/projects/junmo/src/main/resources/static/js/bbs/csr",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "File.Encoding"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\KDT\projects\junmo\src\main\resources\static\js\bbs\csr" />
+      <recent name="C:\KDT\projects\junmo\src\main\java\com\KDT\mosi\domain\rbbsReport\svc" />
+      <recent name="C:\KDT\projects\junmo\src\main\java\com\KDT\mosi\domain\rbbsReport\dao" />
+      <recent name="C:\KDT\projects\junmo\src\main\java\com\KDT\mosi\domain\rbbsLike" />
       <recent name="C:\KDT\projects\junmo\src\main\java\com\KDT\mosi\domain" />
-      <recent name="C:\KDT\projects\junmo\src\main\java\com\KDT\mosi\domain\bbsComment" />
-      <recent name="C:\KDT\projects\junmo\src\main\java\com\KDT\mosi\domain\bbsReport" />
-      <recent name="C:\KDT\projects\junmo\src\main\java\com\KDT\mosi\domain\bbsLike" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\KDT\projects\junmo\src\main\resources\static" />
@@ -79,11 +109,11 @@
       <recent name="C:\KDT\projects\junmo\sql" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.KDT.mosi.web" />
+      <recent name="com.KDT.mosi.web.form.rbbsReport" />
+      <recent name="com.KDT.mosi.domain.rbbsLike.dao" />
       <recent name="com.KDT.mosi.web.form" />
       <recent name="com.KDT.mosi.domain.entity" />
-      <recent name="com.KDT.mosi.web" />
-      <recent name="com.KDT.mosi.web.form.rbbs" />
-      <recent name="com.KDT.mosi.domain.bbsComment.svc" />
     </key>
   </component>
   <component name="RunManager" selected="Application.MosiApplication">
